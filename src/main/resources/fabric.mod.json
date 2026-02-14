@@ -20,6 +20,9 @@
 		],
 		"fabric-datagen": [
 			"zezagi.breakingblocks.BreakingBlocksDataGenerator"
+		],
+		"client": [
+			"zezagi.breakingblocks.BreakingBlocksClient"
 		]
 	},
 	"mixins": [

@@ -15,18 +15,19 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import zezagi.breakingblocks.BreakingBlocks;
 import zezagi.breakingblocks.item.customItem.CocaCropBlock;
+import java.util.function.Function;
 
 public class ModItems {
 
-    public static final Item COCA_SEEDS = registerItem("coca_seeds", settings -> new BlockItem(ModItems.COCA_CROP, settings));
-    public static final Block COCA_CROP = registerBlockWithoutItem("coca_crop",
+    public static final Block COCA_CROP = registerBlockWithoutItem("coca_crop", key ->
             new CocaCropBlock(AbstractBlock.Settings.copy(Blocks.WHEAT)
+                    .registryKey(key)
                     .nonOpaque()
                     .noCollision()
                     .breakInstantly()
             )
     );
-
+    public static final Item COCA_SEEDS = registerItem("coca_seeds", settings -> new BlockItem(ModItems.COCA_CROP, settings));
 
     private static Item registerItem(String name, java.util.function.Function<Item.Settings, Item> itemFactory) {
         Identifier id = Identifier.of(BreakingBlocks.MOD_ID, name);
@@ -39,8 +40,12 @@ public class ModItems {
         return Registry.register(Registries.ITEM, id, item);
     }
 
-    private static <T extends Block> T registerBlockWithoutItem(String name, T block) {
-        return Registry.register(Registries.BLOCK, Identifier.of(BreakingBlocks.MOD_ID, name), block);
+    private static <T extends Block> T registerBlockWithoutItem(String name, Function<RegistryKey<Block>, T> blockFactory) {
+        Identifier id = Identifier.of(BreakingBlocks.MOD_ID, name);
+        RegistryKey<Block> key = RegistryKey.of(RegistryKeys.BLOCK, id);
+
+        T block = blockFactory.apply(key);
+        return Registry.register(Registries.BLOCK, id, block);
     }
 
     public static void registerModItems() {
