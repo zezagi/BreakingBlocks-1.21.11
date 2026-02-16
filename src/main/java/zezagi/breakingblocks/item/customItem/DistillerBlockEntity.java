@@ -66,6 +66,9 @@ public class DistillerBlockEntity extends BlockEntity {
             this.fuelLevel = 0;
             sync();
             markDirty();
+            if (world != null && !world.isClient()) {
+                world.setBlockState(pos, getCachedState().with(zezagi.breakingblocks.item.customItem.DistillerBlock.LEVEL, 1), 3);
+            }
         }
     }
 
@@ -87,19 +90,25 @@ public class DistillerBlockEntity extends BlockEntity {
                 be.startedBurningTick = world.getTime();
                 be.sync();
                 be.markDirty();
-
             }
 
             be.burningProgress++;
-            if(world.getRandom().nextDouble() < 0.15)
-            {world.playSound(
-                    null,
-                    pos,
-                    SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE,
-                    SoundCategory.BLOCKS,
-                    1.0f,
-                    1.0f
-            );}
+
+            int expectedLevel = 1;
+            if (be.burningProgress > 1333) {
+                expectedLevel = 3;
+            } else if (be.burningProgress > 666) {
+                expectedLevel = 2;
+            }
+
+            if (state.get(zezagi.breakingblocks.item.customItem.DistillerBlock.LEVEL) != expectedLevel) {
+                world.setBlockState(pos, state.with(zezagi.breakingblocks.item.customItem.DistillerBlock.LEVEL, expectedLevel), 3);
+            }
+
+            if (world.getRandom().nextDouble() < 0.15) {
+                world.playSound(null, pos, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0f, 1.0f);
+            }
+
             if (be.burningProgress >= MAX_BURNING_PROGRESS) {
                 be.isBurning = false;
                 be.isFull = true;
@@ -108,6 +117,7 @@ public class DistillerBlockEntity extends BlockEntity {
                 be.sync();
                 be.markDirty();
 
+                world.setBlockState(pos, state.with(zezagi.breakingblocks.item.customItem.DistillerBlock.LEVEL, 4), 3);
             }
         }
     }
@@ -127,6 +137,16 @@ public class DistillerBlockEntity extends BlockEntity {
         if (world != null && !world.isClient()) {
             world.updateListeners(pos, getCachedState(), getCachedState(), 3);
         }
+    }
+
+    public boolean isGasolineReady() {
+        return !isBurning && isFull;
+    }
+
+    public void consumeGasoline() {
+        this.isFull = false;
+        markDirty();
+        sync();
     }
 
     public int getTimeToFinishBurningInTicks() {

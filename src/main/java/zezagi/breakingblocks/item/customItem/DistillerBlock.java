@@ -31,22 +31,26 @@ import net.minecraft.world.tick.ScheduledTickView;
 import org.jetbrains.annotations.Nullable;
 import zezagi.breakingblocks.ModBlockEntities;
 import zezagi.breakingblocks.ModComponents;
+import zezagi.breakingblocks.item.ModItems;
 
 public class DistillerBlock extends Block implements BlockEntityProvider {
 
     public static final EnumProperty<DoubleBlockHalf> HALF = Properties.DOUBLE_BLOCK_HALF;
     public static final EnumProperty<Direction> FACING = Properties.HORIZONTAL_FACING;
 
+    public static final net.minecraft.state.property.IntProperty LEVEL = net.minecraft.state.property.IntProperty.of("level", 0, 4);
+
     public DistillerBlock(Settings settings) {
         super(settings);
         this.setDefaultState(this.stateManager.getDefaultState()
                 .with(HALF, DoubleBlockHalf.LOWER)
-                .with(FACING, Direction.NORTH));
+                .with(FACING, Direction.NORTH)
+                .with(LEVEL, 0));
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(HALF, FACING);
+        builder.add(HALF, FACING, LEVEL);
     }
 
     @Nullable
@@ -57,14 +61,15 @@ public class DistillerBlock extends Block implements BlockEntityProvider {
         if (pos.getY() < world.getBottomY() + world.getHeight() - 1 && world.getBlockState(pos.up()).canReplace(ctx)) {
             return this.getDefaultState()
                     .with(HALF, DoubleBlockHalf.LOWER)
-                    .with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
+                    .with(FACING, ctx.getHorizontalPlayerFacing().getOpposite())
+                    .with(LEVEL, 0);
         }
         return null;
     }
 
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
-        world.setBlockState(pos.up(), state.with(HALF, DoubleBlockHalf.UPPER), 3);
+        world.setBlockState(pos.up(), state.with(HALF, DoubleBlockHalf.UPPER).with(LEVEL, 0), 3);
         if (!world.isClient()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof DistillerBlockEntity distillerBE) {
@@ -138,6 +143,49 @@ public class DistillerBlock extends Block implements BlockEntityProvider {
                     float randPitch = 0.7f + world.getRandom().nextFloat() * 0.6f;
                     world.playSound(null, actualPos, SoundEvents.BLOCK_BAMBOO_WOOD_PLACE, SoundCategory.BLOCKS, 1.0f, randPitch);
                     return ActionResult.SUCCESS;
+                }
+            } else {
+                return ActionResult.SUCCESS;
+            }
+        }
+        else if (stack.isOf(zezagi.breakingblocks.item.ModItems.CANISTER)) {
+            BlockPos actualPos = state.get(HALF) == DoubleBlockHalf.LOWER ? pos : pos.down();
+
+            if (!world.isClient()) {
+                BlockEntity blockEntity = world.getBlockEntity(actualPos);
+                if (blockEntity instanceof DistillerBlockEntity distillerBE) {
+                    if (!distillerBE.isGasolineReady()) return ActionResult.PASS;
+
+                    int currentGasolineLevelInCanister = stack.getOrDefault(ModComponents.GASOLINE_LEVEL, 0);
+                    if (currentGasolineLevelInCanister == CanisterItem.MAX_CAPACITY) {
+                        return ActionResult.PASS;
+                    } else {
+                        distillerBE.consumeGasoline();
+
+                        BlockState lowerState = world.getBlockState(actualPos);
+                        world.setBlockState(actualPos, lowerState.with(LEVEL, 0), 3);
+
+                        BlockState upperState = world.getBlockState(actualPos.up());
+                        if (upperState.isOf(this)) {
+                            world.setBlockState(actualPos.up(), upperState.with(LEVEL, 0), 3);
+                        }
+
+                        ItemStack filledCanister = new ItemStack(zezagi.breakingblocks.item.ModItems.CANISTER);
+                        filledCanister.set(ModComponents.GASOLINE_LEVEL, CanisterItem.MAX_CAPACITY);
+
+                        if (stack.getCount() == 1) {
+                            player.setStackInHand(hand, filledCanister);
+                        } else {
+                            stack.decrement(1);
+                            if (!player.getInventory().insertStack(filledCanister)) {
+                                player.dropItem(filledCanister, false);
+                            }
+                        }
+
+                        world.playSound(null, actualPos, net.minecraft.sound.SoundEvents.ITEM_BUCKET_FILL, net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 1.0f);
+
+                        return ActionResult.SUCCESS;
+                    }
                 }
             } else {
                 return ActionResult.SUCCESS;

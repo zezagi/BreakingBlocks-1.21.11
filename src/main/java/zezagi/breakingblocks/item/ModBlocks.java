@@ -27,7 +27,10 @@ public class ModBlocks {
                     .registryKey(key)
                     .nonOpaque()
                     .strength(4.0f)
-                    .luminance(state -> 15)
+                    .luminance(state -> {
+                        int level = state.get(zezagi.breakingblocks.item.customItem.DistillerBlock.LEVEL);
+                        return (level >= 1 && level <= 3) ? 13 : 0;
+                    })
                     .requiresTool()
                     .sounds(net.minecraft.sound.BlockSoundGroup.STONE))
     );

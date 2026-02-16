@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "breakingblocks:block/distiller"
+    "model": "breakingblocks:block/distiller_0"
   }
 }
