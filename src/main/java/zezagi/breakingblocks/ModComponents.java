@@ -20,6 +20,13 @@ public class ModComponents {
             ComponentType.<Integer>builder().codec(Codec.INT).build()
     );
 
+    public static final ComponentType<Integer> FUEL_LEVEL = Registry.register(
+            Registries.DATA_COMPONENT_TYPE,
+            Identifier.of(BreakingBlocks.MOD_ID, "fuel_level"),
+            ComponentType.<Integer>builder().codec(Codec.INT).build()
+    );
+
+
     public static void InitializeModComponents()
     {
         BreakingBlocks.LOGGER.info("Registering Mod Components for " + BreakingBlocks.MOD_ID);

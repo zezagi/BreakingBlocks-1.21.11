@@ -19,46 +19,23 @@ import zezagi.breakingblocks.item.customItem.MacerationBarrelBlock;
 
 import java.util.function.Function;
 
+import zezagi.breakingblocks.item.ModBlocks;
+
 public class ModItems {
 
-    public static final Block COCA_CROP = registerBlockWithoutItem("coca_crop", key ->
-            new CocaCropBlock(
-                    Block.Settings.create()
-                            .registryKey(key)
-                            .noCollision()
-                            .ticksRandomly()
-                            .breakInstantly()
-                            .sounds(net.minecraft.sound.BlockSoundGroup.CROP))
-    );
 
-    public static final Item COCA_SEEDS = registerItem("coca_seeds", settings -> new BlockItem(ModItems.COCA_CROP, settings));
+
+    public static final Item COCA_SEEDS = registerItem("coca_seeds", settings -> new BlockItem(ModBlocks.COCA_CROP, settings));
     public static final Item COCA_LEAF = registerItem("coca_leaf", Item::new);
 
-    public static final Block MACERATION_BARREL = registerBlockWithoutItem("maceration_barrel", key ->
-            new MacerationBarrelBlock(Block.Settings.create()
-                    .registryKey(key)
-                    .nonOpaque()
-                    .strength(2.0f)
-                    .sounds(net.minecraft.sound.BlockSoundGroup.WOOD))
-    );
-
-    public static final Block DISTILLER = registerBlockWithoutItem("distiller", key ->
-            new DistillerBlock(Block.Settings.create()
-                    .registryKey(key)
-                    .nonOpaque()
-                    .strength(4.0f)
-                    .luminance(state -> 15)
-                    .requiresTool()
-                    .sounds(net.minecraft.sound.BlockSoundGroup.STONE))
-    );
-
-    public static final Item MACERATION_BARREL_ITEM = registerItem("maceration_barrel", settings -> new BlockItem(MACERATION_BARREL, settings));
-    public static final Item DISTILLER_ITEM = registerItem("distiller", settings -> new BlockItem(DISTILLER, settings));
+    public static final Item MACERATION_BARREL_ITEM = registerItem("maceration_barrel", settings -> new BlockItem(ModBlocks.MACERATION_BARREL, settings));
+    public static final Item DISTILLER_ITEM = registerItem("distiller", settings -> new BlockItem(ModBlocks.DISTILLER,
+            settings.component(ModComponents.FUEL_LEVEL,0)));
 
     public static final Item CANISTER = registerItem("canister", settings -> new CanisterItem(
             settings
             .maxCount(8)
-            .component(ModComponents.GASOLINE_LEVEL,20)));
+            .component(ModComponents.GASOLINE_LEVEL,0)));
 
     private static Item registerItem(String name, Function<Item.Settings, Item> itemFactory) {
         Identifier id = Identifier.of(BreakingBlocks.MOD_ID, name);
@@ -68,12 +45,6 @@ public class ModItems {
         return Registry.register(Registries.ITEM, id, item);
     }
 
-    private static <T extends Block> T registerBlockWithoutItem(String name, Function<RegistryKey<Block>, T> blockFactory) {
-        Identifier id = Identifier.of(BreakingBlocks.MOD_ID, name);
-        RegistryKey<Block> key = RegistryKey.of(RegistryKeys.BLOCK, id);
-        T block = blockFactory.apply(key);
-        return Registry.register(Registries.BLOCK, id, block);
-    }
 
     public static void registerModItems() {
         BreakingBlocks.LOGGER.info("Registering Mod Items for " + BreakingBlocks.MOD_ID);

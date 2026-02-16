@@ -4,6 +4,7 @@ import net.fabricmc.api.ModInitializer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import zezagi.breakingblocks.item.ModBlocks;
 import zezagi.breakingblocks.item.ModItems;
 
 public class BreakingBlocks implements ModInitializer {
@@ -12,6 +13,8 @@ public class BreakingBlocks implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		ModBlockEntities.RegisterBlockEntities();
+		ModBlocks.RegisterModBlocks();
 		ModItems.registerModItems();
 		ModComponents.InitializeModComponents();
 	}
