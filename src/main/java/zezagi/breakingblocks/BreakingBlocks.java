@@ -12,7 +12,7 @@ public class BreakingBlocks implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		LOGGER.info("Hello Fabric world!");
 		ModItems.registerModItems();
+		ModComponents.InitializeModComponents();
 	}
 }

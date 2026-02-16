@@ -1,4 +1,7 @@
 {
   "item.breakingblocks.coca_seeds": "Coca Seeds",
-  "item.breakingblocks.coca_leaf": "Coca Leaf"
+  "item.breakingblocks.coca_leaf": "Coca Leaf",
+  "item.breakingblocks.maceration_barrel": "Maceration Barrel",
+  "item.breakingblocks.canister": "Canister",
+  "item.breakingblocks.canister.capacity": "Gasoline: %s/%s"
 }

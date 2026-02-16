@@ -9,5 +9,6 @@ public class BreakingBlocksClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         BlockRenderLayerMap.putBlock(ModItems.COCA_CROP, BlockRenderLayer.CUTOUT);
+        BlockRenderLayerMap.putBlock(ModItems.DISTILLER, BlockRenderLayer.TRANSLUCENT);
     }
 }

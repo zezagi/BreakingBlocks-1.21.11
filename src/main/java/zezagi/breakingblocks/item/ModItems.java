@@ -11,7 +11,10 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import zezagi.breakingblocks.BreakingBlocks;
+import zezagi.breakingblocks.ModComponents;
+import zezagi.breakingblocks.item.customItem.CanisterItem;
 import zezagi.breakingblocks.item.customItem.CocaCropBlock;
+import zezagi.breakingblocks.item.customItem.DistillerBlock;
 import zezagi.breakingblocks.item.customItem.MacerationBarrelBlock;
 
 import java.util.function.Function;
@@ -29,7 +32,6 @@ public class ModItems {
     );
 
     public static final Item COCA_SEEDS = registerItem("coca_seeds", settings -> new BlockItem(ModItems.COCA_CROP, settings));
-
     public static final Item COCA_LEAF = registerItem("coca_leaf", Item::new);
 
     public static final Block MACERATION_BARREL = registerBlockWithoutItem("maceration_barrel", key ->
@@ -40,8 +42,23 @@ public class ModItems {
                     .sounds(net.minecraft.sound.BlockSoundGroup.WOOD))
     );
 
-    public static final Item MACERATION_BARREL_ITEM = registerItem("maceration_barrel", settings -> new BlockItem(MACERATION_BARREL, settings));
+    public static final Block DISTILLER = registerBlockWithoutItem("distiller", key ->
+            new DistillerBlock(Block.Settings.create()
+                    .registryKey(key)
+                    .nonOpaque()
+                    .strength(4.0f)
+                    .luminance(state -> 15)
+                    .requiresTool()
+                    .sounds(net.minecraft.sound.BlockSoundGroup.STONE))
+    );
 
+    public static final Item MACERATION_BARREL_ITEM = registerItem("maceration_barrel", settings -> new BlockItem(MACERATION_BARREL, settings));
+    public static final Item DISTILLER_ITEM = registerItem("distiller", settings -> new BlockItem(DISTILLER, settings));
+
+    public static final Item CANISTER = registerItem("canister", settings -> new CanisterItem(
+            settings
+            .maxCount(8)
+            .component(ModComponents.GASOLINE_LEVEL,20)));
 
     private static Item registerItem(String name, Function<Item.Settings, Item> itemFactory) {
         Identifier id = Identifier.of(BreakingBlocks.MOD_ID, name);
@@ -64,6 +81,8 @@ public class ModItems {
             entries.add(COCA_SEEDS);
             entries.add(COCA_LEAF);
             entries.add(MACERATION_BARREL_ITEM);
+            entries.add(CANISTER);
+            entries.add(DISTILLER_ITEM);
         });
     }
 }

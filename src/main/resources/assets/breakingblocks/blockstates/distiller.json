@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=north,half=lower": { "model": "breakingblocks:block/distiller" },
+    "facing=south,half=lower": { "model": "breakingblocks:block/distiller", "y": 180 },
+    "facing=east,half=lower": { "model": "breakingblocks:block/distiller", "y": 90 },
+    "facing=west,half=lower": { "model": "breakingblocks:block/distiller", "y": 270 },
+    "facing=north,half=upper": { "model": "breakingblocks:block/distiller_invisible" },
+    "facing=south,half=upper": { "model": "breakingblocks:block/distiller_invisible" },
+    "facing=east,half=upper": { "model": "breakingblocks:block/distiller_invisible" },
+    "facing=west,half=upper": { "model": "breakingblocks:block/distiller_invisible" }
+  }
+}
