@@ -1,4 +1,4 @@
-package zezagi.breakingblocks.item.customItem;
+package zezagi.breakingblocks.block;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.Block;

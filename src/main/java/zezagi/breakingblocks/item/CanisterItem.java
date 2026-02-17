@@ -1,4 +1,4 @@
-package zezagi.breakingblocks.item.customItem;
+package zezagi.breakingblocks.item;
 
 import net.minecraft.component.type.TooltipDisplayComponent;
 import net.minecraft.item.Item;
@@ -8,7 +8,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import zezagi.breakingblocks.ModComponents;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 public class CanisterItem extends Item {

@@ -2,10 +2,10 @@
 	"format_version": "1.21.11",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "breakingblocks:block/barrel_side",
-		"1": "breakingblocks:block/barrel_inside",
-		"2": "breakingblocks:block/barrel_slurry",
-		"particle": "breakingblocks:block/barrel_side"
+		"0": "breakingblocks:block/barrel/barrel_side",
+		"1": "breakingblocks:block/barrel/barrel_inside",
+		"2": "breakingblocks:block/barrel/barrel_slurry",
+		"particle": "breakingblocks:block/barrel/barrel_side"
 	},
 	"elements": [
 		{

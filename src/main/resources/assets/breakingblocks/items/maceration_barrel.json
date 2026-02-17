@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "breakingblocks:block/maceration_barrel"
+    "model": "breakingblocks:block/barrel/maceration_barrel"
   }
 }

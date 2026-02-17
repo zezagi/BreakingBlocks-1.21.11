@@ -3,5 +3,6 @@
   "item.breakingblocks.coca_leaf": "Coca Leaf",
   "item.breakingblocks.maceration_barrel": "Maceration Barrel",
   "item.breakingblocks.canister": "Canister",
-  "item.breakingblocks.canister.capacity": "Gasoline: %s/%s"
+  "item.breakingblocks.canister.capacity": "Gasoline: %s/%s",
+  "item.breakingblocks.distiller": "Gasoline distiller"
 }

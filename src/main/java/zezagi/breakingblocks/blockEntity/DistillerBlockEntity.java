@@ -1,4 +1,4 @@
-package zezagi.breakingblocks.item.customItem;
+package zezagi.breakingblocks.blockEntity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -7,10 +7,10 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import zezagi.breakingblocks.ModBlockEntities;
 import com.mojang.serialization.Codec;
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
+import zezagi.breakingblocks.block.DistillerBlock;
 
 
 public class DistillerBlockEntity extends BlockEntity {
@@ -25,7 +25,12 @@ public class DistillerBlockEntity extends BlockEntity {
     long startedBurningTick = -1;
 
     public DistillerBlockEntity(BlockPos pos, BlockState state) {
+
         super(ModBlockEntities.DISTILLER_BE, pos, state);
+    }
+
+    public int getFuelLevel() {
+        return fuelLevel;
     }
 
     @Override
@@ -67,9 +72,11 @@ public class DistillerBlockEntity extends BlockEntity {
             sync();
             markDirty();
             if (world != null && !world.isClient()) {
-                world.setBlockState(pos, getCachedState().with(zezagi.breakingblocks.item.customItem.DistillerBlock.LEVEL, 1), 3);
+                net.minecraft.block.BlockState currentState = world.getBlockState(pos);
+                world.setBlockState(pos, currentState.with(zezagi.breakingblocks.block.DistillerBlock.LEVEL, 1), 3);
             }
         }
+
     }
 
     public static void tick(World world, BlockPos pos, BlockState state, DistillerBlockEntity be) {
@@ -101,8 +108,9 @@ public class DistillerBlockEntity extends BlockEntity {
                 expectedLevel = 2;
             }
 
-            if (state.get(zezagi.breakingblocks.item.customItem.DistillerBlock.LEVEL) != expectedLevel) {
-                world.setBlockState(pos, state.with(zezagi.breakingblocks.item.customItem.DistillerBlock.LEVEL, expectedLevel), 3);
+            net.minecraft.block.BlockState currentTickState = world.getBlockState(pos);
+            if (currentTickState.get(zezagi.breakingblocks.block.DistillerBlock.LEVEL) != expectedLevel) {
+                world.setBlockState(pos, currentTickState.with(zezagi.breakingblocks.block.DistillerBlock.LEVEL, expectedLevel), 3);
             }
 
             if (world.getRandom().nextDouble() < 0.15) {
@@ -117,7 +125,8 @@ public class DistillerBlockEntity extends BlockEntity {
                 be.sync();
                 be.markDirty();
 
-                world.setBlockState(pos, state.with(zezagi.breakingblocks.item.customItem.DistillerBlock.LEVEL, 4), 3);
+                net.minecraft.block.BlockState finalState = world.getBlockState(pos);
+                world.setBlockState(pos, finalState.with(zezagi.breakingblocks.block.DistillerBlock.LEVEL, 4), 3);
             }
         }
     }

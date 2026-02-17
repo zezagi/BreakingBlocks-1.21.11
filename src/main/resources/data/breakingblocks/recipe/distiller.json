@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "CGC",
+    "IKI",
+    "SFS"
+  ],
+  "key": {
+    "C": "minecraft:copper_ingot",
+    "G": "minecraft:glass",
+    "I": "minecraft:iron_ingot",
+    "K": "minecraft:cauldron",
+    "S": "minecraft:smooth_stone",
+    "F": "minecraft:furnace"
+  },
+  "result": {
+    "id": "breakingblocks:distiller",
+    "count": 1
+  }
+}

@@ -1,4 +1,4 @@
-package zezagi.breakingblocks.item;
+package zezagi.breakingblocks.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.registry.Registries;
@@ -7,9 +7,6 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import zezagi.breakingblocks.BreakingBlocks;
-import zezagi.breakingblocks.item.customItem.CocaCropBlock;
-import zezagi.breakingblocks.item.customItem.DistillerBlock;
-import zezagi.breakingblocks.item.customItem.MacerationBarrelBlock;
 
 import java.util.function.Function;
 
@@ -28,7 +25,7 @@ public class ModBlocks {
                     .nonOpaque()
                     .strength(4.0f)
                     .luminance(state -> {
-                        int level = state.get(zezagi.breakingblocks.item.customItem.DistillerBlock.LEVEL);
+                        int level = state.get(DistillerBlock.LEVEL);
                         return (level >= 1 && level <= 3) ? 13 : 0;
                     })
                     .requiresTool()

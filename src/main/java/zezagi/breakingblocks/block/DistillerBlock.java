@@ -1,4 +1,4 @@
-package zezagi.breakingblocks.item.customItem;
+package zezagi.breakingblocks.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -13,7 +13,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
@@ -29,9 +28,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.minecraft.world.tick.ScheduledTickView;
 import org.jetbrains.annotations.Nullable;
-import zezagi.breakingblocks.ModBlockEntities;
+import zezagi.breakingblocks.blockEntity.ModBlockEntities;
 import zezagi.breakingblocks.ModComponents;
 import zezagi.breakingblocks.item.ModItems;
+import zezagi.breakingblocks.item.CanisterItem;
+import zezagi.breakingblocks.blockEntity.DistillerBlockEntity;
 
 public class DistillerBlock extends Block implements BlockEntityProvider {
 
@@ -117,8 +118,8 @@ public class DistillerBlock extends Block implements BlockEntityProvider {
             if (blockEntity instanceof DistillerBlockEntity distillerBE) {
                 ItemStack drop = new ItemStack(this.asItem());
 
-                if (distillerBE.fuelLevel > 0) {
-                    drop.set(zezagi.breakingblocks.ModComponents.FUEL_LEVEL, distillerBE.fuelLevel);
+                if (distillerBE.getFuelLevel() > 0) {
+                    drop.set(zezagi.breakingblocks.ModComponents.FUEL_LEVEL, distillerBE.getFuelLevel());
                 }
 
                 Block.dropStack(world, actualPos, drop);
@@ -148,7 +149,7 @@ public class DistillerBlock extends Block implements BlockEntityProvider {
                 return ActionResult.SUCCESS;
             }
         }
-        else if (stack.isOf(zezagi.breakingblocks.item.ModItems.CANISTER)) {
+        else if (stack.isOf(ModItems.CANISTER)) {
             BlockPos actualPos = state.get(HALF) == DoubleBlockHalf.LOWER ? pos : pos.down();
 
             if (!world.isClient()) {
@@ -170,7 +171,7 @@ public class DistillerBlock extends Block implements BlockEntityProvider {
                             world.setBlockState(actualPos.up(), upperState.with(LEVEL, 0), 3);
                         }
 
-                        ItemStack filledCanister = new ItemStack(zezagi.breakingblocks.item.ModItems.CANISTER);
+                        ItemStack filledCanister = new ItemStack(ModItems.CANISTER);
                         filledCanister.set(ModComponents.GASOLINE_LEVEL, CanisterItem.MAX_CAPACITY);
 
                         if (stack.getCount() == 1) {

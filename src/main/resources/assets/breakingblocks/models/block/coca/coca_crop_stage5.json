@@ -1,7 +1,7 @@
 {
   "render_type": "minecraft:cutout",
   "textures": {
-    "cross": "breakingblocks:block/coca_stage5",
+    "cross": "breakingblocks:block/coca/coca_stage5",
     "particle": "#cross"
   },
   "elements": [

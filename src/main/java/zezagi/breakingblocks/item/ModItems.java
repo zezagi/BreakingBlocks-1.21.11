@@ -1,7 +1,6 @@
 package zezagi.breakingblocks.item;
 
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
@@ -10,21 +9,15 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
-import zezagi.breakingblocks.BreakingBlocks;
-import zezagi.breakingblocks.ModComponents;
-import zezagi.breakingblocks.item.customItem.CanisterItem;
-import zezagi.breakingblocks.item.customItem.CocaCropBlock;
-import zezagi.breakingblocks.item.customItem.DistillerBlock;
-import zezagi.breakingblocks.item.customItem.MacerationBarrelBlock;
 
 import java.util.function.Function;
 
-import zezagi.breakingblocks.item.ModBlocks;
+import zezagi.breakingblocks.BreakingBlocks;
+import zezagi.breakingblocks.ModComponents;
+import zezagi.breakingblocks.block.ModBlocks;
 
 public class ModItems {
-
-
-
+    
     public static final Item COCA_SEEDS = registerItem("coca_seeds", settings -> new BlockItem(ModBlocks.COCA_CROP, settings));
     public static final Item COCA_LEAF = registerItem("coca_leaf", Item::new);
 
