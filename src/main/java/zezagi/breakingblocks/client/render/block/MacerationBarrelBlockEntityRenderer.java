@@ -5,7 +5,6 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.LightmapTextureManager;
-import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.block.entity.state.BlockEntityRenderState;
@@ -15,9 +14,9 @@ import net.minecraft.client.render.state.CameraRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4f;
 import zezagi.breakingblocks.blockEntity.MacerationBarrelBlockEntity;
 
 @Environment(EnvType.CLIENT)
@@ -36,55 +35,58 @@ public class MacerationBarrelBlockEntityRenderer implements BlockEntityRenderer<
 
     @Override
     public void updateRenderState(MacerationBarrelBlockEntity blockEntity, BarrelRenderState state, float tickProgress, Vec3d cameraPos, ModelCommandRenderer.@Nullable CrumblingOverlayCommand crumblingOverlay) {
+        BlockEntityRenderer.super.updateRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay);
+
         state.gasolineLevel = blockEntity.getGasolineLevel();
         state.leavesCount = blockEntity.getLeavesLevel();
-    }
-
-    @Override
-    public boolean rendersOutsideBoundingBox() {
-        return true;
-    }
-
-    @Override
-    public int getRenderDistance() {
-        return 256; // testowo duży zasięg, potem możesz zmniejszyć
+        state.pos = blockEntity.getPos();
+        state.isProductionEnabled = blockEntity.isProductionEnabled();
     }
 
     @Override
     public void render(BarrelRenderState state, MatrixStack matrices, OrderedRenderCommandQueue queue, CameraRenderState cameraState) {
-        System.out.println("[BreakingBlocks] MacerationBarrelBlockEntityRenderer.render() CALLED");
+        net.minecraft.util.hit.HitResult hitResult = MinecraftClient.getInstance().crosshairTarget;
+        if (!(hitResult instanceof net.minecraft.util.hit.BlockHitResult blockHit) || !blockHit.getBlockPos().equals(state.pos)) {
+            return;
+        }
+
         matrices.push();
 
-        // Nad blokiem (środek X/Z, wysoko Y)
-        matrices.translate(0.5, 2.5, 0.5);
+        matrices.translate(0.5, 2, 0.5);
 
-        // W TEŚCIE: nie obracamy do kamery, bo to potrafi wyjść "bokiem"
-        // matrices.multiply(MinecraftClient.getInstance().gameRenderer.getCamera().getRotation());
+        matrices.multiply(MinecraftClient.getInstance().gameRenderer.getCamera().getRotation());
+        matrices.multiply(net.minecraft.util.math.RotationAxis.POSITIVE_Y.rotationDegrees(180.0F));
 
-        // Duży tekst (mniej skalowania = większy tekst w świecie)
-        matrices.scale(-0.05F, -0.05F, 0.05F);
+        matrices.scale(-0.025F, -0.025F, 0.025F);
 
-        int light = LightmapTextureManager.MAX_LIGHT_COORDINATE;
+        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
-        OrderedText text = Text.literal("TEST_RENDERER").asOrderedText();
+        String line1 = "Gasoline: " + state.gasolineLevel + "/100L";
+        String line2 = "Leaves: " + state.leavesCount;
 
-        queue.submitText(
-                matrices,
-                0f,
-                0f,
-                text,
-                false,
-                TextRenderer.TextLayerType.NORMAL,
-                light,
-                0xFFFFFFFF,
-                0x00000000,
-                0
-        );
+
+        float x1 = -textRenderer.getWidth(line1) / 2.0f;
+        float x2 = -textRenderer.getWidth(line2) / 2.0f;
+
+        int light = net.minecraft.client.render.LightmapTextureManager.MAX_LIGHT_COORDINATE;
+
+        net.minecraft.text.OrderedText t1 = net.minecraft.text.Text.literal(line1).asOrderedText();
+        net.minecraft.text.OrderedText t2 = net.minecraft.text.Text.literal(line2).asOrderedText();
+
+        int whiteArgb = 0xFFFFFFFF;
+        int greenArgb = 0xFF00FF00;
+        int backgroundArgb = 0x40000000;
+
+        queue.submitText(matrices, x1, 0f, t1, false, TextRenderer.TextLayerType.SEE_THROUGH, light, whiteArgb, backgroundArgb, 0);
+        queue.submitText(matrices, x2, 10f, t2, false, TextRenderer.TextLayerType.SEE_THROUGH, light, greenArgb, backgroundArgb, 0);
 
         matrices.pop();
     }
+
     public static class BarrelRenderState extends BlockEntityRenderState {
         public int gasolineLevel = 0;
         public int leavesCount = 0;
+        boolean isProductionEnabled = false;
+        public BlockPos pos;
     }
 }

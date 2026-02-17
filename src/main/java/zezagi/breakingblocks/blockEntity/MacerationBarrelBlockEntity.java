@@ -15,11 +15,14 @@ import org.jspecify.annotations.Nullable;
 
 public class MacerationBarrelBlockEntity extends BlockEntity {
 
-    int MAX_GASOLINE_LEVEL = 100;
-    int MAX_LEAVES_LEVEL = 64;
+    public int MAX_GASOLINE_LEVEL = 100;
+    public int MAX_LEAVES_LEVEL = 64;
 
     int gasolineLevel = 0;
     int leavesLevel = 0;
+    boolean isProductionEnabled = false;
+
+    public boolean isProductionEnabled(){ return isProductionEnabled; }
 
     public MacerationBarrelBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.MACERATION_BARREL_BE, pos, state);
@@ -72,9 +75,22 @@ public class MacerationBarrelBlockEntity extends BlockEntity {
         return rest;
     }
 
-    public void addLeaves(int amount) {
-        this.leavesLevel = Math.min(this.leavesLevel + amount, MAX_LEAVES_LEVEL);
+    public int addLeavesAndReturnRest(int amount) {
+        int spaceLeft = MAX_LEAVES_LEVEL - this.leavesLevel;
+        int rest = Math.max(0, amount - spaceLeft);
+        this.leavesLevel = Math.min(this.leavesLevel+amount, MAX_LEAVES_LEVEL);
         sync();
+        return rest;
+    }
+
+    public boolean isReadyToProduce()
+    {
+        return this.leavesLevel == MAX_LEAVES_LEVEL && this.gasolineLevel == MAX_GASOLINE_LEVEL;
+    }
+
+    public void startProducing()
+    {
+
     }
 
 

@@ -85,7 +85,7 @@ public class MacerationBarrelBlock extends Block implements BlockEntityProvider 
             if (blockEntity instanceof MacerationBarrelBlockEntity barrelBE) {
                 int gasInCanister = stack.getOrDefault(ModComponents.GASOLINE_LEVEL, 0);
 
-                if (gasInCanister <= 0 || barrelBE.getGasolineLevel() >= 100) {
+                if (gasInCanister <= 0 || barrelBE.getGasolineLevel() >= barrelBE.MAX_GASOLINE_LEVEL) {
                     return ActionResult.PASS;
                 }
 
@@ -108,6 +108,27 @@ public class MacerationBarrelBlock extends Block implements BlockEntityProvider 
                 world.playSound(null, pos, net.minecraft.sound.SoundEvents.ITEM_BUCKET_EMPTY, net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 1.0f);
             }
             return ActionResult.SUCCESS;
+        }
+        else if (stack.isOf(ModItems.COCA_LEAF)) {
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+
+            if (blockEntity instanceof MacerationBarrelBlockEntity barrelBE) {
+                if (barrelBE.getLeavesLevel() >= 64) {
+                    return ActionResult.PASS;
+                }
+
+                if (world.isClient()) return ActionResult.SUCCESS;
+
+                int leavesInHand = stack.getCount();
+                int rest = barrelBE.addLeavesAndReturnRest(leavesInHand);
+                int insertedAmount = leavesInHand - rest;
+
+                stack.decrement(insertedAmount);
+
+                world.playSound(null, pos, net.minecraft.sound.SoundEvents.BLOCK_COMPOSTER_FILL, net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 1.0f);
+
+                return ActionResult.SUCCESS;
+            }
         }
         return ActionResult.PASS;
     }

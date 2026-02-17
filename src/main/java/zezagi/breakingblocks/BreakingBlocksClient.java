@@ -1,6 +1,7 @@
 package zezagi.breakingblocks;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.minecraft.client.render.BlockRenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
@@ -15,9 +16,5 @@ public class BreakingBlocksClient implements ClientModInitializer {
         BlockRenderLayerMap.putBlock(ModBlocks.COCA_CROP, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(ModBlocks.DISTILLER, BlockRenderLayer.TRANSLUCENT);
         BlockEntityRendererFactories.register(ModBlockEntities.MACERATION_BARREL_BE, MacerationBarrelBlockEntityRenderer::new);
-
-        System.out.println("[BreakingBlocks] client registered renderer for typeId="
-                + Registries.BLOCK_ENTITY_TYPE.getId(ModBlockEntities.MACERATION_BARREL_BE)
-                + " typeInstanceHash=" + System.identityHashCode(ModBlockEntities.MACERATION_BARREL_BE));
     }
 }
