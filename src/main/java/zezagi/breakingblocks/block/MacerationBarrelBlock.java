@@ -1,13 +1,12 @@
 package zezagi.breakingblocks.block;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -19,6 +18,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import zezagi.breakingblocks.ModComponents;
 import zezagi.breakingblocks.blockEntity.MacerationBarrelBlockEntity;
+import zezagi.breakingblocks.blockEntity.ModBlockEntities;
 import zezagi.breakingblocks.item.ModItems;
 
 public class MacerationBarrelBlock extends Block implements BlockEntityProvider {
@@ -38,7 +38,30 @@ public class MacerationBarrelBlock extends Block implements BlockEntityProvider 
     }
 
     @Override
-    protected MapCodec<? extends Block> getCodec() {
+    public net.minecraft.block.BlockRenderType getRenderType(net.minecraft.block.BlockState state) {
+        return net.minecraft.block.BlockRenderType.MODEL;
+    }
+
+    @Override
+    public void onPlaced(World world, BlockPos pos, BlockState state, @org.jspecify.annotations.Nullable LivingEntity placer, ItemStack itemStack) {
+        super.onPlaced(world, pos, state, placer, itemStack);
+        BlockEntity be = world.getBlockEntity(pos);
+
+        String beClass = (be == null) ? "null" : be.getClass().getName();
+        String beTypeId = (be == null) ? "null" : String.valueOf(Registries.BLOCK_ENTITY_TYPE.getId(be.getType()));
+        String modTypeId = String.valueOf(Registries.BLOCK_ENTITY_TYPE.getId(ModBlockEntities.MACERATION_BARREL_BE));
+        boolean sameTypeInstance = (be != null) && (be.getType() == ModBlockEntities.MACERATION_BARREL_BE);
+
+        System.out.println("[BreakingBlocks] MacerationBarrel onPlaced side=" + (world.isClient() ? "CLIENT" : "SERVER")
+                + " block=" + state.getBlock().getTranslationKey()
+                + " be=" + beClass
+                + " beTypeId=" + beTypeId
+                + " modTypeId=" + modTypeId
+                + " sameTypeInstance=" + sameTypeInstance);
+    }
+
+    @Override
+    protected MapCodec<MacerationBarrelBlock> getCodec() {
         return CODEC;
     }
 

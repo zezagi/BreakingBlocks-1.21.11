@@ -4,6 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
@@ -12,6 +13,8 @@ import net.minecraft.client.render.command.ModelCommandRenderer;
 import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.state.CameraRenderState;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.OrderedText;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
@@ -37,33 +40,49 @@ public class MacerationBarrelBlockEntityRenderer implements BlockEntityRenderer<
         state.leavesCount = blockEntity.getLeavesLevel();
     }
 
+    @Override
+    public boolean rendersOutsideBoundingBox() {
+        return true;
+    }
+
+    @Override
+    public int getRenderDistance() {
+        return 256; // testowo duży zasięg, potem możesz zmniejszyć
+    }
 
     @Override
     public void render(BarrelRenderState state, MatrixStack matrices, OrderedRenderCommandQueue queue, CameraRenderState cameraState) {
+        System.out.println("[BreakingBlocks] MacerationBarrelBlockEntityRenderer.render() CALLED");
         matrices.push();
-        matrices.translate(0.5, 1.2, 0.5);
 
-        matrices.multiply(MinecraftClient.getInstance().gameRenderer.getCamera().getRotation());
+        // Nad blokiem (środek X/Z, wysoko Y)
+        matrices.translate(0.5, 2.5, 0.5);
 
-        matrices.scale(-0.025F, -0.025F, 0.025F);
+        // W TEŚCIE: nie obracamy do kamery, bo to potrafi wyjść "bokiem"
+        // matrices.multiply(MinecraftClient.getInstance().gameRenderer.getCamera().getRotation());
 
-        TextRenderer textRenderer = this.context.textRenderer();
-        Matrix4f matrix = matrices.peek().getPositionMatrix();
+        // Duży tekst (mniej skalowania = większy tekst w świecie)
+        matrices.scale(-0.05F, -0.05F, 0.05F);
 
-        String line1 = "Benzyna: " + state.gasolineLevel + "/100L";
-        String line2 = "Liscie Koki: " + state.leavesCount;
+        int light = LightmapTextureManager.MAX_LIGHT_COORDINATE;
 
-        float x1 = (float) (-textRenderer.getWidth(line1) / 2);
-        float x2 = (float) (-textRenderer.getWidth(line2) / 2);
+        OrderedText text = Text.literal("TEST_RENDERER").asOrderedText();
 
-        int light = 15728880;
-
-        textRenderer.draw(line1, x1, 0f, 0xFFFFFF, false, matrix, (VertexConsumerProvider) queue, TextRenderer.TextLayerType.NORMAL, 0x40000000, light);
-        textRenderer.draw(line2, x2, 10f, 0x00FF00, false, matrix, (VertexConsumerProvider) queue, TextRenderer.TextLayerType.NORMAL, 0x40000000, light);
+        queue.submitText(
+                matrices,
+                0f,
+                0f,
+                text,
+                false,
+                TextRenderer.TextLayerType.NORMAL,
+                light,
+                0xFFFFFFFF,
+                0x00000000,
+                0
+        );
 
         matrices.pop();
     }
-
     public static class BarrelRenderState extends BlockEntityRenderState {
         public int gasolineLevel = 0;
         public int leavesCount = 0;

@@ -25,5 +25,6 @@ public class ModBlockEntities {
 
     public static void RegisterBlockEntities() {
         BreakingBlocks.LOGGER.info("Registering Block Entities for " + BreakingBlocks.MOD_ID);
+        BreakingBlocks.LOGGER.info("[BreakingBlocks] MACERATION_BARREL_BE id=" + Registries.BLOCK_ENTITY_TYPE.getId(MACERATION_BARREL_BE));
     }
 }
