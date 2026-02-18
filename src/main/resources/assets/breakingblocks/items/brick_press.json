@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "breakingblocks:block/brick_press/brick_press_empty"
+  }
+}

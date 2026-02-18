@@ -30,6 +30,21 @@ public class ModItems {
             .maxCount(8)
             .component(ModComponents.GASOLINE_LEVEL,0)));
 
+    public static final Item COKE_PASTE = registerItem("coke_paste", Item::new);
+
+    public static final Item DRYING_STATION_ITEM = registerItem("drying_station", settings ->
+            new BlockItem(ModBlocks.DRYING_STATION, settings)
+            );
+
+    public static final Item DRYED_COKE = registerItem("dryed_coke", Item::new);
+
+    public static final Item BRICK_PRESS_ITEM = registerItem("brick_press", settings ->
+            new BlockItem(ModBlocks.BRICK_PRESS, settings));
+
+    public static final Item COCAINE_BRICK_ITEM = registerItem("cocaine_brick", settings ->
+            new BlockItem(ModBlocks.COCAINE_BRICK, settings)
+            );
+
     private static Item registerItem(String name, Function<Item.Settings, Item> itemFactory) {
         Identifier id = Identifier.of(BreakingBlocks.MOD_ID, name);
         RegistryKey<Item> key = RegistryKey.of(RegistryKeys.ITEM, id);
@@ -47,6 +62,11 @@ public class ModItems {
             entries.add(MACERATION_BARREL_ITEM);
             entries.add(CANISTER);
             entries.add(DISTILLER_ITEM);
+            entries.add(COKE_PASTE);
+            entries.add(DRYING_STATION_ITEM);
+            entries.add(DRYED_COKE);
+            entries.add(BRICK_PRESS_ITEM);
+            entries.add(COCAINE_BRICK_ITEM);
         });
     }
 }

@@ -41,6 +41,7 @@ public class MacerationBarrelBlockEntityRenderer implements BlockEntityRenderer<
         state.leavesCount = blockEntity.getLeavesLevel();
         state.pos = blockEntity.getPos();
         state.isProductionEnabled = blockEntity.isProductionEnabled();
+        state.isPasteReadyToCollect = blockEntity.isPasteReadyToCollect();
     }
 
     @Override
@@ -60,25 +61,37 @@ public class MacerationBarrelBlockEntityRenderer implements BlockEntityRenderer<
         matrices.scale(-0.025F, -0.025F, 0.025F);
 
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-
-        String line1 = "Gasoline: " + state.gasolineLevel + "/100L";
-        String line2 = "Leaves: " + state.leavesCount;
-
-
-        float x1 = -textRenderer.getWidth(line1) / 2.0f;
-        float x2 = -textRenderer.getWidth(line2) / 2.0f;
-
         int light = net.minecraft.client.render.LightmapTextureManager.MAX_LIGHT_COORDINATE;
-
-        net.minecraft.text.OrderedText t1 = net.minecraft.text.Text.literal(line1).asOrderedText();
-        net.minecraft.text.OrderedText t2 = net.minecraft.text.Text.literal(line2).asOrderedText();
 
         int whiteArgb = 0xFFFFFFFF;
         int greenArgb = 0xFF00FF00;
+        int orangeArgb = 0xFFFFAA00;
         int backgroundArgb = 0x40000000;
 
-        queue.submitText(matrices, x1, 0f, t1, false, TextRenderer.TextLayerType.SEE_THROUGH, light, whiteArgb, backgroundArgb, 0);
-        queue.submitText(matrices, x2, 10f, t2, false, TextRenderer.TextLayerType.SEE_THROUGH, light, greenArgb, backgroundArgb, 0);
+        if (state.isPasteReadyToCollect) {
+            String readyLine = "Paste Ready!";
+            float px = -textRenderer.getWidth(readyLine) / 2.0f;
+            OrderedText pt = Text.literal(readyLine).asOrderedText();
+            queue.submitText(matrices, px, 5f, pt, false, TextRenderer.TextLayerType.SEE_THROUGH, light, 0xFF00FFFF, backgroundArgb, 0);
+        }
+        else if (state.isProductionEnabled) {
+            String prodLine = "Macerating in progress...";
+            float px = -textRenderer.getWidth(prodLine) / 2.0f;
+            net.minecraft.text.OrderedText pt = net.minecraft.text.Text.literal(prodLine).asOrderedText();
+            queue.submitText(matrices, px, 5f, pt, false, TextRenderer.TextLayerType.SEE_THROUGH, light, orangeArgb, backgroundArgb, 0);
+        } else {
+            String line1 = "Gasoline: " + state.gasolineLevel + "/100L";
+            String line2 = "Leaves: " + state.leavesCount;
+
+            float x1 = -textRenderer.getWidth(line1) / 2.0f;
+            float x2 = -textRenderer.getWidth(line2) / 2.0f;
+
+            net.minecraft.text.OrderedText t1 = net.minecraft.text.Text.literal(line1).asOrderedText();
+            net.minecraft.text.OrderedText t2 = net.minecraft.text.Text.literal(line2).asOrderedText();
+
+            queue.submitText(matrices, x1, 0f, t1, false, TextRenderer.TextLayerType.SEE_THROUGH, light, whiteArgb, backgroundArgb, 0);
+            queue.submitText(matrices, x2, 10f, t2, false, TextRenderer.TextLayerType.SEE_THROUGH, light, greenArgb, backgroundArgb, 0);
+        }
 
         matrices.pop();
     }
@@ -88,5 +101,6 @@ public class MacerationBarrelBlockEntityRenderer implements BlockEntityRenderer<
         public int leavesCount = 0;
         boolean isProductionEnabled = false;
         public BlockPos pos;
+        boolean isPasteReadyToCollect = false;
     }
 }

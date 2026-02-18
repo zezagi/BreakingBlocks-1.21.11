@@ -23,6 +23,13 @@ public class ModBlockEntities {
                     FabricBlockEntityTypeBuilder.create(MacerationBarrelBlockEntity::new, ModBlocks.MACERATION_BARREL).build()
             );
 
+    public static final BlockEntityType<DryingStationBlockEntity> DRYING_STATION_BE =
+            Registry.register(
+                    Registries.BLOCK_ENTITY_TYPE,
+                    Identifier.of(BreakingBlocks.MOD_ID, "drying_station"),
+                    FabricBlockEntityTypeBuilder.create(DryingStationBlockEntity::new, ModBlocks.DRYING_STATION).build()
+            );
+
     public static void RegisterBlockEntities() {
         BreakingBlocks.LOGGER.info("Registering Block Entities for " + BreakingBlocks.MOD_ID);
         BreakingBlocks.LOGGER.info("[BreakingBlocks] MACERATION_BARREL_BE id=" + Registries.BLOCK_ENTITY_TYPE.getId(MACERATION_BARREL_BE));

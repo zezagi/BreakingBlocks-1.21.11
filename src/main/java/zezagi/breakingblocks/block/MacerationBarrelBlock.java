@@ -3,6 +3,8 @@ package zezagi.breakingblocks.block;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -17,6 +19,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import zezagi.breakingblocks.ModComponents;
+import zezagi.breakingblocks.blockEntity.DistillerBlockEntity;
 import zezagi.breakingblocks.blockEntity.MacerationBarrelBlockEntity;
 import zezagi.breakingblocks.blockEntity.ModBlockEntities;
 import zezagi.breakingblocks.item.ModItems;
@@ -72,6 +75,15 @@ public class MacerationBarrelBlock extends Block implements BlockEntityProvider 
 
     @Nullable
     @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        if (type == ModBlockEntities.MACERATION_BARREL_BE) {
+            return (world1, pos, state1, blockEntity) -> MacerationBarrelBlockEntity.tick(world1, pos, state1, (MacerationBarrelBlockEntity) blockEntity);
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state)
     {
         return new MacerationBarrelBlockEntity(pos, state);
@@ -79,10 +91,29 @@ public class MacerationBarrelBlock extends Block implements BlockEntityProvider 
 
     @Override
     protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (stack.isOf(ModItems.CANISTER)) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
+        BlockEntity blockEntity = world.getBlockEntity(pos);
 
-            if (blockEntity instanceof MacerationBarrelBlockEntity barrelBE) {
+        if (blockEntity instanceof MacerationBarrelBlockEntity barrelBE) {
+
+            if (barrelBE.isPasteReadyToCollect()) {
+                if (world.isClient()) return ActionResult.SUCCESS;
+
+                barrelBE.collectPaste();
+
+                ItemStack pasteStack = new ItemStack(ModItems.COKE_PASTE);
+                if (!player.getInventory().insertStack(pasteStack)) {
+                    player.dropItem(pasteStack, false);
+                }
+
+                world.playSound(null, pos, net.minecraft.sound.SoundEvents.BLOCK_SLIME_BLOCK_PLACE, net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 1.0f);
+                return ActionResult.SUCCESS;
+            }
+
+            if (barrelBE.isProductionEnabled()) {
+                return ActionResult.PASS;
+            }
+
+            if (stack.isOf(ModItems.CANISTER)) {
                 int gasInCanister = stack.getOrDefault(ModComponents.GASOLINE_LEVEL, 0);
 
                 if (gasInCanister <= 0 || barrelBE.getGasolineLevel() >= barrelBE.MAX_GASOLINE_LEVEL) {
@@ -106,13 +137,9 @@ public class MacerationBarrelBlock extends Block implements BlockEntityProvider 
                 }
 
                 world.playSound(null, pos, net.minecraft.sound.SoundEvents.ITEM_BUCKET_EMPTY, net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 1.0f);
+                return ActionResult.SUCCESS;
             }
-            return ActionResult.SUCCESS;
-        }
-        else if (stack.isOf(ModItems.COCA_LEAF)) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
-
-            if (blockEntity instanceof MacerationBarrelBlockEntity barrelBE) {
+            else if (stack.isOf(ModItems.COCA_LEAF)) {
                 if (barrelBE.getLeavesLevel() >= 64) {
                     return ActionResult.PASS;
                 }
@@ -126,10 +153,11 @@ public class MacerationBarrelBlock extends Block implements BlockEntityProvider 
                 stack.decrement(insertedAmount);
 
                 world.playSound(null, pos, net.minecraft.sound.SoundEvents.BLOCK_COMPOSTER_FILL, net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 1.0f);
-
                 return ActionResult.SUCCESS;
             }
         }
+
         return ActionResult.PASS;
     }
+
 }

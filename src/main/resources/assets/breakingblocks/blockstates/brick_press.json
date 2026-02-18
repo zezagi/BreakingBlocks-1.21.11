@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "facing=north,state=0": { "model": "breakingblocks:block/brick_press/brick_press_empty" },
+    "facing=east,state=0":  { "model": "breakingblocks:block/brick_press/brick_press_empty", "y": 90 },
+    "facing=south,state=0": { "model": "breakingblocks:block/brick_press/brick_press_empty", "y": 180 },
+    "facing=west,state=0":  { "model": "breakingblocks:block/brick_press/brick_press_empty", "y": 270 },
+
+    "facing=north,state=1": { "model": "breakingblocks:block/brick_press/brick_press_loaded" },
+    "facing=east,state=1":  { "model": "breakingblocks:block/brick_press/brick_press_loaded", "y": 90 },
+    "facing=south,state=1": { "model": "breakingblocks:block/brick_press/brick_press_loaded", "y": 180 },
+    "facing=west,state=1":  { "model": "breakingblocks:block/brick_press/brick_press_loaded", "y": 270 },
+
+    "facing=north,state=2": { "model": "breakingblocks:block/brick_press/brick_press_pressed" },
+    "facing=east,state=2":  { "model": "breakingblocks:block/brick_press/brick_press_pressed", "y": 90 },
+    "facing=south,state=2": { "model": "breakingblocks:block/brick_press/brick_press_pressed", "y": 180 },
+    "facing=west,state=2":  { "model": "breakingblocks:block/brick_press/brick_press_pressed", "y": 270 }
+  }
+}

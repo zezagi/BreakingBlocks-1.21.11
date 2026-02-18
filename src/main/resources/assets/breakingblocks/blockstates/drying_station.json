@@ -1,0 +1,53 @@
+{
+  "variants": {
+    "dry=false,facing=north,paste=0": { "model": "breakingblocks:block/drying_station/drying_station_0" },
+    "dry=false,facing=east,paste=0":  { "model": "breakingblocks:block/drying_station/drying_station_0", "y": 90 },
+    "dry=false,facing=south,paste=0": { "model": "breakingblocks:block/drying_station/drying_station_0", "y": 180 },
+    "dry=false,facing=west,paste=0":  { "model": "breakingblocks:block/drying_station/drying_station_0", "y": 270 },
+
+    "dry=false,facing=north,paste=1": { "model": "breakingblocks:block/drying_station/drying_station_1" },
+    "dry=false,facing=east,paste=1":  { "model": "breakingblocks:block/drying_station/drying_station_1", "y": 90 },
+    "dry=false,facing=south,paste=1": { "model": "breakingblocks:block/drying_station/drying_station_1", "y": 180 },
+    "dry=false,facing=west,paste=1":  { "model": "breakingblocks:block/drying_station/drying_station_1", "y": 270 },
+
+    "dry=false,facing=north,paste=2": { "model": "breakingblocks:block/drying_station/drying_station_2" },
+    "dry=false,facing=east,paste=2":  { "model": "breakingblocks:block/drying_station/drying_station_2", "y": 90 },
+    "dry=false,facing=south,paste=2": { "model": "breakingblocks:block/drying_station/drying_station_2", "y": 180 },
+    "dry=false,facing=west,paste=2":  { "model": "breakingblocks:block/drying_station/drying_station_2", "y": 270 },
+
+    "dry=false,facing=north,paste=3": { "model": "breakingblocks:block/drying_station/drying_station_3" },
+    "dry=false,facing=east,paste=3":  { "model": "breakingblocks:block/drying_station/drying_station_3", "y": 90 },
+    "dry=false,facing=south,paste=3": { "model": "breakingblocks:block/drying_station/drying_station_3", "y": 180 },
+    "dry=false,facing=west,paste=3":  { "model": "breakingblocks:block/drying_station/drying_station_3", "y": 270 },
+
+    "dry=false,facing=north,paste=4": { "model": "breakingblocks:block/drying_station/drying_station_4" },
+    "dry=false,facing=east,paste=4":  { "model": "breakingblocks:block/drying_station/drying_station_4", "y": 90 },
+    "dry=false,facing=south,paste=4": { "model": "breakingblocks:block/drying_station/drying_station_4", "y": 180 },
+    "dry=false,facing=west,paste=4":  { "model": "breakingblocks:block/drying_station/drying_station_4", "y": 270 },
+
+    "dry=true,facing=north,paste=0": { "model": "breakingblocks:block/drying_station/drying_station_0" },
+    "dry=true,facing=east,paste=0":  { "model": "breakingblocks:block/drying_station/drying_station_0", "y": 90 },
+    "dry=true,facing=south,paste=0": { "model": "breakingblocks:block/drying_station/drying_station_0", "y": 180 },
+    "dry=true,facing=west,paste=0":  { "model": "breakingblocks:block/drying_station/drying_station_0", "y": 270 },
+
+    "dry=true,facing=north,paste=1": { "model": "breakingblocks:block/drying_station/drying_station_1" },
+    "dry=true,facing=east,paste=1":  { "model": "breakingblocks:block/drying_station/drying_station_1", "y": 90 },
+    "dry=true,facing=south,paste=1": { "model": "breakingblocks:block/drying_station/drying_station_1", "y": 180 },
+    "dry=true,facing=west,paste=1":  { "model": "breakingblocks:block/drying_station/drying_station_1", "y": 270 },
+
+    "dry=true,facing=north,paste=2": { "model": "breakingblocks:block/drying_station/drying_station_2" },
+    "dry=true,facing=east,paste=2":  { "model": "breakingblocks:block/drying_station/drying_station_2", "y": 90 },
+    "dry=true,facing=south,paste=2": { "model": "breakingblocks:block/drying_station/drying_station_2", "y": 180 },
+    "dry=true,facing=west,paste=2":  { "model": "breakingblocks:block/drying_station/drying_station_2", "y": 270 },
+
+    "dry=true,facing=north,paste=3": { "model": "breakingblocks:block/drying_station/drying_station_3" },
+    "dry=true,facing=east,paste=3":  { "model": "breakingblocks:block/drying_station/drying_station_3", "y": 90 },
+    "dry=true,facing=south,paste=3": { "model": "breakingblocks:block/drying_station/drying_station_3", "y": 180 },
+    "dry=true,facing=west,paste=3":  { "model": "breakingblocks:block/drying_station/drying_station_3", "y": 270 },
+
+    "dry=true,facing=north,paste=4": { "model": "breakingblocks:block/drying_station/drying_station_done" },
+    "dry=true,facing=east,paste=4":  { "model": "breakingblocks:block/drying_station/drying_station_done", "y": 90 },
+    "dry=true,facing=south,paste=4": { "model": "breakingblocks:block/drying_station/drying_station_done", "y": 180 },
+    "dry=true,facing=west,paste=4":  { "model": "breakingblocks:block/drying_station/drying_station_done", "y": 270 }
+  }
+}

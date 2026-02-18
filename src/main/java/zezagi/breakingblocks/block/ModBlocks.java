@@ -1,10 +1,12 @@
 package zezagi.breakingblocks.block;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import zezagi.breakingblocks.BreakingBlocks;
 
@@ -40,6 +42,23 @@ public class ModBlocks {
                             .breakInstantly()
                             .sounds(net.minecraft.sound.BlockSoundGroup.CROP))
     );
+
+    public static final Block DRYING_STATION = registerBlockWithoutItem("drying_station", key ->
+            new DryingStationBlock(
+                    AbstractBlock.Settings.create()
+                            .registryKey(key)
+                            .nonOpaque()
+                            .sounds(BlockSoundGroup.METAL)
+                            .luminance(state -> 10)
+            ));
+
+    public static final Block BRICK_PRESS = registerBlockWithoutItem("brick_press", key ->
+            new BrickPressBlock(AbstractBlock.Settings.create().registryKey(key)));
+
+    public static final Block COCAINE_BRICK = registerBlockWithoutItem("cocaine_brick", key ->
+            new CocaineBrickBlock(AbstractBlock.Settings.create().registryKey(key))
+            );
+
     private static <T extends Block> T registerBlockWithoutItem(String name, Function<RegistryKey<Block>, T> blockFactory) {
         Identifier id = Identifier.of(BreakingBlocks.MOD_ID, name);
         RegistryKey<Block> key = RegistryKey.of(RegistryKeys.BLOCK, id);

@@ -4,5 +4,10 @@
   "item.breakingblocks.maceration_barrel": "Maceration Barrel",
   "item.breakingblocks.canister": "Canister",
   "item.breakingblocks.canister.capacity": "Gasoline: %s/%s",
-  "item.breakingblocks.distiller": "Gasoline distiller"
+  "item.breakingblocks.distiller": "Gasoline distiller",
+  "item.breakingblocks.coke_paste": "Coke Paste",
+  "item.breakingblocks.drying_station": "Drying Station",
+  "item.breakingblocks.dryed_coke": "Dryed Coke",
+  "item.breakingblocks.brick_press": "Brick Press",
+  "item.breakingblocks.cocaine_brick": "Cocaine Brick"
 }
