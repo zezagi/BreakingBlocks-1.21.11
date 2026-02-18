@@ -79,7 +79,7 @@ public class CocaCropBlock extends PlantBlock implements Fertilizable {
         if (stack.isOf(Items.SHEARS) && (age >= 5 && age != 8 && age != 9)) {
             if (!world.isClient()) {
                 world.setBlockState(pos, state.with(AGE, 8), Block.NOTIFY_LISTENERS);
-                HandleDrop(world, pos, age);
+                handleDrop(world, pos, age);
                 world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0f, 1.0f);
             }
             return ActionResult.SUCCESS;
@@ -88,7 +88,7 @@ public class CocaCropBlock extends PlantBlock implements Fertilizable {
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
     }
 
-    private void HandleDrop(World world, BlockPos pos, int age) {
+    private void handleDrop(World world, BlockPos pos, int age) {
         if (age == 7) {
             dropStack(world, pos, new ItemStack(ModItems.COCA_SEEDS, world.getRandom().nextInt(2)));
             dropStack(world, pos, new ItemStack(ModItems.COCA_LEAF, 5 + world.getRandom().nextInt(5)));

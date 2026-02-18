@@ -1,4 +1,4 @@
-package zezagi.breakingblocks.blockEntity;
+package zezagi.breakingblocks.blockentity;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
@@ -17,9 +17,9 @@ public class DryingStationBlockEntity extends BlockEntity {
     public static final int MAX_DRYING_TIME = 700;
     public static final int MIN_DRYING_TIME = 400;
 
-    long dryingStartedAt = -1;
-    int drawnDryingTime = 0;
-    int dryingProgress = 0;
+    private long dryingStartedAt = -1;
+    private int drawnDryingTime = 0;
+    private int dryingProgress = 0;
 
     public DryingStationBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.DRYING_STATION_BE, pos, state);

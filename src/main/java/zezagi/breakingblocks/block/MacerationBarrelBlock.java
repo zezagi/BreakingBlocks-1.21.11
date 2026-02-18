@@ -19,9 +19,9 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import zezagi.breakingblocks.ModComponents;
-import zezagi.breakingblocks.blockEntity.DistillerBlockEntity;
-import zezagi.breakingblocks.blockEntity.MacerationBarrelBlockEntity;
-import zezagi.breakingblocks.blockEntity.ModBlockEntities;
+import zezagi.breakingblocks.blockentity.MacerationBarrelBlockEntity;
+import zezagi.breakingblocks.blockentity.ModBlockEntities;
+import zezagi.breakingblocks.item.CanisterItem;
 import zezagi.breakingblocks.item.ModItems;
 
 public class MacerationBarrelBlock extends Block implements BlockEntityProvider {
@@ -43,24 +43,6 @@ public class MacerationBarrelBlock extends Block implements BlockEntityProvider 
     @Override
     public net.minecraft.block.BlockRenderType getRenderType(net.minecraft.block.BlockState state) {
         return net.minecraft.block.BlockRenderType.MODEL;
-    }
-
-    @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, @org.jspecify.annotations.Nullable LivingEntity placer, ItemStack itemStack) {
-        super.onPlaced(world, pos, state, placer, itemStack);
-        BlockEntity be = world.getBlockEntity(pos);
-
-        String beClass = (be == null) ? "null" : be.getClass().getName();
-        String beTypeId = (be == null) ? "null" : String.valueOf(Registries.BLOCK_ENTITY_TYPE.getId(be.getType()));
-        String modTypeId = String.valueOf(Registries.BLOCK_ENTITY_TYPE.getId(ModBlockEntities.MACERATION_BARREL_BE));
-        boolean sameTypeInstance = (be != null) && (be.getType() == ModBlockEntities.MACERATION_BARREL_BE);
-
-        System.out.println("[BreakingBlocks] MacerationBarrel onPlaced side=" + (world.isClient() ? "CLIENT" : "SERVER")
-                + " block=" + state.getBlock().getTranslationKey()
-                + " be=" + beClass
-                + " beTypeId=" + beTypeId
-                + " modTypeId=" + modTypeId
-                + " sameTypeInstance=" + sameTypeInstance);
     }
 
     @Override
@@ -124,17 +106,7 @@ public class MacerationBarrelBlock extends Block implements BlockEntityProvider 
 
                 int rest = barrelBE.addGasolineAndReturnRest(gasInCanister);
 
-                ItemStack newCanister = new ItemStack(ModItems.CANISTER);
-                newCanister.set(ModComponents.GASOLINE_LEVEL, rest);
-
-                if (stack.getCount() == 1) {
-                    player.setStackInHand(hand, newCanister);
-                } else {
-                    stack.decrement(1);
-                    if (!player.getInventory().insertStack(newCanister)) {
-                        player.dropItem(newCanister, false);
-                    }
-                }
+                player.setStackInHand(hand, CanisterItem.getModifiedCanister(stack, player, rest));
 
                 world.playSound(null, pos, net.minecraft.sound.SoundEvents.ITEM_BUCKET_EMPTY, net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 1.0f);
                 return ActionResult.SUCCESS;

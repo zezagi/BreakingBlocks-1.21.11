@@ -1,4 +1,4 @@
-package zezagi.breakingblocks.blockEntity;
+package zezagi.breakingblocks.blockentity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -10,7 +10,6 @@ import org.jetbrains.annotations.Nullable;
 import com.mojang.serialization.Codec;
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
-import zezagi.breakingblocks.block.DistillerBlock;
 
 
 public class DistillerBlockEntity extends BlockEntity {
@@ -18,11 +17,11 @@ public class DistillerBlockEntity extends BlockEntity {
     private static final int REQUIRED_FUEL_LEVEL = 3;
     private static final int MAX_BURNING_PROGRESS = 2000;
 
-    int fuelLevel = 0;
-    boolean isFull = false;
-    boolean isBurning = false;
-    int burningProgress = 0;
-    long startedBurningTick = -1;
+    private int fuelLevel = 0;
+    private boolean isFull = false;
+    private boolean isBurning = false;
+    private int burningProgress = 0;
+    private long startedBurningTick = -1;
 
     public DistillerBlockEntity(BlockPos pos, BlockState state) {
 
@@ -102,9 +101,11 @@ public class DistillerBlockEntity extends BlockEntity {
             be.burningProgress++;
 
             int expectedLevel = 1;
-            if (be.burningProgress > 1333) {
+
+            int third = MAX_BURNING_PROGRESS / 3;
+            if (be.burningProgress > third * 2) {
                 expectedLevel = 3;
-            } else if (be.burningProgress > 666) {
+            } else if (be.burningProgress > third) {
                 expectedLevel = 2;
             }
 

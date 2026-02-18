@@ -1,4 +1,4 @@
-package zezagi.breakingblocks.blockEntity;
+package zezagi.breakingblocks.blockentity;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.entity.BlockEntityType;

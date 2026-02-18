@@ -66,7 +66,7 @@ public class ModBlocks {
         return Registry.register(Registries.BLOCK, id, block);
     }
 
-    public static void RegisterModBlocks() {
+    public static void registerModBlocks() {
        BreakingBlocks.LOGGER.info("Registering Mod Blocks for " + BreakingBlocks.MOD_ID);
     }
 }

@@ -4,7 +4,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.block.entity.state.BlockEntityRenderState;
@@ -17,7 +16,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
-import zezagi.breakingblocks.blockEntity.MacerationBarrelBlockEntity;
+import zezagi.breakingblocks.blockentity.MacerationBarrelBlockEntity;
 
 @Environment(EnvType.CLIENT)
 public class MacerationBarrelBlockEntityRenderer implements BlockEntityRenderer<MacerationBarrelBlockEntity, MacerationBarrelBlockEntityRenderer.BarrelRenderState> {
@@ -69,19 +68,23 @@ public class MacerationBarrelBlockEntityRenderer implements BlockEntityRenderer<
         int backgroundArgb = 0x40000000;
 
         if (state.isPasteReadyToCollect) {
-            String readyLine = "Paste Ready!";
+            String readyLine = Text.translatable("block.breakingblocks.maceration_barrel.ready").getString();
             float px = -textRenderer.getWidth(readyLine) / 2.0f;
             OrderedText pt = Text.literal(readyLine).asOrderedText();
             queue.submitText(matrices, px, 5f, pt, false, TextRenderer.TextLayerType.SEE_THROUGH, light, 0xFF00FFFF, backgroundArgb, 0);
         }
         else if (state.isProductionEnabled) {
-            String prodLine = "Macerating in progress...";
+            String prodLine = Text.translatable("block.breakingblocks.maceration_barrel.producing").getString();
             float px = -textRenderer.getWidth(prodLine) / 2.0f;
             net.minecraft.text.OrderedText pt = net.minecraft.text.Text.literal(prodLine).asOrderedText();
             queue.submitText(matrices, px, 5f, pt, false, TextRenderer.TextLayerType.SEE_THROUGH, light, orangeArgb, backgroundArgb, 0);
         } else {
-            String line1 = "Gasoline: " + state.gasolineLevel + "/100L";
-            String line2 = "Leaves: " + state.leavesCount;
+
+            String gasTransalatable = Text.translatable("block.breakingblocks.maceration_barrel.gasoline").getString();
+            String leavesTranslatable = Text.translatable("block.breakingblocks.maceration_barrel.leaves").getString();
+
+            String line1 = gasTransalatable + state.gasolineLevel + "/100L";
+            String line2 = leavesTranslatable + state.leavesCount;
 
             float x1 = -textRenderer.getWidth(line1) / 2.0f;
             float x2 = -textRenderer.getWidth(line2) / 2.0f;

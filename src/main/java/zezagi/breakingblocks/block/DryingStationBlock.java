@@ -8,7 +8,6 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
@@ -23,8 +22,8 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import zezagi.breakingblocks.blockEntity.DryingStationBlockEntity;
-import zezagi.breakingblocks.blockEntity.ModBlockEntities;
+import zezagi.breakingblocks.blockentity.DryingStationBlockEntity;
+import zezagi.breakingblocks.blockentity.ModBlockEntities;
 import zezagi.breakingblocks.item.ModItems;
 
 public class DryingStationBlock extends Block implements BlockEntityProvider {

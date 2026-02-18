@@ -1,8 +1,10 @@
 package zezagi.breakingblocks.item;
 
 import net.minecraft.component.type.TooltipDisplayComponent;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsage;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -37,6 +39,15 @@ public class CanisterItem extends Item {
         if(currentCapacity <= MAX_CAPACITY / 3) return 0xFF0000;
         else if(currentCapacity <= MAX_CAPACITY / 2) return 0xFFFF00;
         return 0x00FF00;
+    }
+
+    public static ItemStack getModifiedCanister(ItemStack inputStack, PlayerEntity player, int newGasolineLevel) {
+        ItemStack outputStack = new ItemStack(ModItems.CANISTER);
+        if (newGasolineLevel > 0) {
+            outputStack.set(ModComponents.GASOLINE_LEVEL, newGasolineLevel);
+        }
+
+        return ItemUsage.exchangeStack(inputStack, player, outputStack);
     }
 
     @Override

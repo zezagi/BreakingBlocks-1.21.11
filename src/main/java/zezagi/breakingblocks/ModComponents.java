@@ -27,7 +27,7 @@ public class ModComponents {
     );
 
 
-    public static void InitializeModComponents()
+    public static void initializeModComponents()
     {
         BreakingBlocks.LOGGER.info("Registering Mod Components for " + BreakingBlocks.MOD_ID);
     }

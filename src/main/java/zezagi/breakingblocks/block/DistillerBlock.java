@@ -28,11 +28,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.minecraft.world.tick.ScheduledTickView;
 import org.jetbrains.annotations.Nullable;
-import zezagi.breakingblocks.blockEntity.ModBlockEntities;
+import zezagi.breakingblocks.blockentity.ModBlockEntities;
 import zezagi.breakingblocks.ModComponents;
 import zezagi.breakingblocks.item.ModItems;
 import zezagi.breakingblocks.item.CanisterItem;
-import zezagi.breakingblocks.blockEntity.DistillerBlockEntity;
+import zezagi.breakingblocks.blockentity.DistillerBlockEntity;
 
 public class DistillerBlock extends Block implements BlockEntityProvider {
 
@@ -171,17 +171,7 @@ public class DistillerBlock extends Block implements BlockEntityProvider {
                             world.setBlockState(actualPos.up(), upperState.with(LEVEL, 0), 3);
                         }
 
-                        ItemStack filledCanister = new ItemStack(ModItems.CANISTER);
-                        filledCanister.set(ModComponents.GASOLINE_LEVEL, CanisterItem.MAX_CAPACITY);
-
-                        if (stack.getCount() == 1) {
-                            player.setStackInHand(hand, filledCanister);
-                        } else {
-                            stack.decrement(1);
-                            if (!player.getInventory().insertStack(filledCanister)) {
-                                player.dropItem(filledCanister, false);
-                            }
-                        }
+                        player.setStackInHand(hand, CanisterItem.getModifiedCanister(stack, player, CanisterItem.MAX_CAPACITY));
 
                         world.playSound(null, actualPos, net.minecraft.sound.SoundEvents.ITEM_BUCKET_FILL, net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 1.0f);
 

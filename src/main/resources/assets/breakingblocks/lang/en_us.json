@@ -9,5 +9,9 @@
   "item.breakingblocks.drying_station": "Drying Station",
   "item.breakingblocks.dryed_coke": "Dryed Coke",
   "item.breakingblocks.brick_press": "Brick Press",
-  "item.breakingblocks.cocaine_brick": "Cocaine Brick"
+  "item.breakingblocks.cocaine_brick": "Cocaine Brick",
+  "block.breakingblocks.maceration_barrel.ready": "Collect paste",
+  "block.breakingblocks.maceration_barrel.producing": "Maceration...",
+  "block.breakingblocks.maceration_barrel.gasoline": "Gasoline:",
+  "block.breakingblocks.maceration_barrel.leaves": "Leaves:"
 }

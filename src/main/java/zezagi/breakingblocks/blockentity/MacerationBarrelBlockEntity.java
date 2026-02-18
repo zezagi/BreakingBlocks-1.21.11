@@ -1,4 +1,4 @@
-package zezagi.breakingblocks.blockEntity;
+package zezagi.breakingblocks.blockentity;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
@@ -17,12 +17,12 @@ public class MacerationBarrelBlockEntity extends BlockEntity {
     public int MAX_LEAVES_LEVEL = 64;
     public int MAX_PRODUCTION_PROGRESS = 600;
 
-    int gasolineLevel = 0;
-    int leavesLevel = 0;
+    private int gasolineLevel = 0;
+    private int leavesLevel = 0;
 
     private boolean isProductionEnabled = false;
-    long productionStartedAtTick = -1;
-    int productionProgress = 0;
+    private long productionStartedAtTick = -1;
+    private int productionProgress = 0;
 
     private boolean isPasteReadyToCollect = false;
 
