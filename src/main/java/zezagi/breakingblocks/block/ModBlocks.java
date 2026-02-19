@@ -18,6 +18,7 @@ public class ModBlocks {
                     .registryKey(key)
                     .nonOpaque()
                     .strength(2.0f)
+                    .requiresTool()
                     .sounds(net.minecraft.sound.BlockSoundGroup.WOOD))
     );
 
@@ -26,6 +27,7 @@ public class ModBlocks {
                     .registryKey(key)
                     .nonOpaque()
                     .strength(4.0f)
+                    .requiresTool()
                     .luminance(state -> {
                         int level = state.get(DistillerBlock.LEVEL);
                         return (level >= 1 && level <= 3) ? 13 : 0;
@@ -48,16 +50,29 @@ public class ModBlocks {
                     AbstractBlock.Settings.create()
                             .registryKey(key)
                             .nonOpaque()
+                            .strength(4.0f)
+                            .requiresTool()
                             .sounds(BlockSoundGroup.METAL)
                             .luminance(state -> 10)
             ));
 
     public static final Block BRICK_PRESS = registerBlockWithoutItem("brick_press", key ->
-            new BrickPressBlock(AbstractBlock.Settings.create().registryKey(key)));
+            new BrickPressBlock(AbstractBlock.Settings.create()
+                    .registryKey(key)
+                    .strength(4.0f)
+                    .requiresTool()
+            ));
 
     public static final Block COCAINE_BRICK = registerBlockWithoutItem("cocaine_brick", key ->
-            new CocaineBrickBlock(AbstractBlock.Settings.create().registryKey(key))
+            new CocaineBrickBlock(AbstractBlock.Settings.create().registryKey(key).strength(2.0f))
             );
+
+    public static final Block HUMIDIFIER = registerBlockWithoutItem("humidifier", key ->
+            new HumidifierBlock(Block.Settings.create()
+                    .registryKey(key)
+                    .requiresTool()
+                    .strength(4)
+            ));
 
     private static <T extends Block> T registerBlockWithoutItem(String name, Function<RegistryKey<Block>, T> blockFactory) {
         Identifier id = Identifier.of(BreakingBlocks.MOD_ID, name);

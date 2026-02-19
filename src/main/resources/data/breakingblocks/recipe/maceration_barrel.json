@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "C/C",
+    "PBP",
+    "CPC"
+  ],
+  "key": {
+    "C": "minecraft:copper_ingot",
+    "/": "minecraft:stick",
+    "P": "minecraft:oak_planks",
+    "B": "minecraft:barrel"
+  },
+  "result": {
+    "id": "breakingblocks:maceration_barrel",
+    "count": 1
+  }
+}

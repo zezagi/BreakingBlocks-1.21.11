@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=north,watered=false": { "model": "breakingblocks:block/humidifier/humidifier_empty" },
+    "facing=east,watered=false":  { "model": "breakingblocks:block/humidifier/humidifier_empty", "y": 90 },
+    "facing=south,watered=false": { "model": "breakingblocks:block/humidifier/humidifier_empty", "y": 180 },
+    "facing=west,watered=false":  { "model": "breakingblocks:block/humidifier/humidifier_empty", "y": 270 },
+    "facing=north,watered=true":  { "model": "breakingblocks:block/humidifier/humidifier_full" },
+    "facing=east,watered=true":   { "model": "breakingblocks:block/humidifier/humidifier_full", "y": 90 },
+    "facing=south,watered=true":  { "model": "breakingblocks:block/humidifier/humidifier_full", "y": 180 },
+    "facing=west,watered=true":   { "model": "breakingblocks:block/humidifier/humidifier_full", "y": 270 }
+  }
+}

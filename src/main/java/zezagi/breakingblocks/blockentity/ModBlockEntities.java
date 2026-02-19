@@ -6,6 +6,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import zezagi.breakingblocks.BreakingBlocks;
+import zezagi.breakingblocks.block.HumidifierBlock;
 import zezagi.breakingblocks.block.ModBlocks;
 
 public class ModBlockEntities {
@@ -28,6 +29,13 @@ public class ModBlockEntities {
                     Registries.BLOCK_ENTITY_TYPE,
                     Identifier.of(BreakingBlocks.MOD_ID, "drying_station"),
                     FabricBlockEntityTypeBuilder.create(DryingStationBlockEntity::new, ModBlocks.DRYING_STATION).build()
+            );
+
+    public static final BlockEntityType<HumidifierBlockEntity> HUMIDIFIER_BE =
+            Registry.register(
+                    Registries.BLOCK_ENTITY_TYPE,
+                    Identifier.of(BreakingBlocks.MOD_ID, "humidifier"),
+                    FabricBlockEntityTypeBuilder.create(HumidifierBlockEntity::new, ModBlocks.HUMIDIFIER).build()
             );
 
     public static void RegisterBlockEntities() {

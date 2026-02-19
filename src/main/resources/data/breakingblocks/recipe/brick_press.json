@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "IPI",
+    "IBI",
+    "SSS"
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "P": "minecraft:piston",
+    "B": "minecraft:iron_block",
+    "S": "minecraft:smooth_stone"
+  },
+  "result": {
+    "id": "breakingblocks:brick_press",
+    "count": 1
+  }
+}

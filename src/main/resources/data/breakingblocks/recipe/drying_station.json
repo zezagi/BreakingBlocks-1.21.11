@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "III",
+    "LRL",
+    "SSS"
+  ],
+  "key": {
+    "I": "minecraft:iron_bars",
+    "L": "minecraft:redstone_lamp",
+    "R": "minecraft:redstone",
+    "S": "minecraft:smooth_stone_slab"
+  },
+  "result": {
+    "id": "breakingblocks:drying_station",
+    "count": 1
+  }
+}

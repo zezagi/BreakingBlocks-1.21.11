@@ -1,6 +1,10 @@
 {
   "replace": false,
   "values": [
-    "breakingblocks:distiller"
+    "breakingblocks:distiller",
+    "breakingblocks:drying_station",
+    "breakingblocks:brick_press",
+    "breakingblocks:humidifier",
+    "breakingblocks:cocaine_brick"
   ]
 }

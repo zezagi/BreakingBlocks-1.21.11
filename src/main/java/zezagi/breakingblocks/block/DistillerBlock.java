@@ -111,18 +111,20 @@ public class DistillerBlock extends Block implements BlockEntityProvider {
 
     @Override
     public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (!world.isClient() && !player.isCreative()) {
+        if (!world.isClient()) {
             BlockPos actualPos = state.get(HALF) == DoubleBlockHalf.LOWER ? pos : pos.down();
             BlockEntity blockEntity = world.getBlockEntity(actualPos);
 
-            if (blockEntity instanceof DistillerBlockEntity distillerBE) {
-                ItemStack drop = new ItemStack(this.asItem());
+            if (!player.isCreative() && player.canHarvest(state)) {
+                if (blockEntity instanceof DistillerBlockEntity distillerBE) {
+                    ItemStack drop = new ItemStack(this.asItem());
 
-                if (distillerBE.getFuelLevel() > 0) {
-                    drop.set(zezagi.breakingblocks.ModComponents.FUEL_LEVEL, distillerBE.getFuelLevel());
+                    if (distillerBE.getFuelLevel() > 0) {
+                        drop.set(zezagi.breakingblocks.ModComponents.FUEL_LEVEL, distillerBE.getFuelLevel());
+                    }
+
+                    Block.dropStack(world, actualPos, drop);
                 }
-
-                Block.dropStack(world, actualPos, drop);
             }
         }
         return super.onBreak(world, pos, state, player);

@@ -13,5 +13,6 @@
   "block.breakingblocks.maceration_barrel.ready": "Collect paste",
   "block.breakingblocks.maceration_barrel.producing": "Maceration...",
   "block.breakingblocks.maceration_barrel.gasoline": "Gasoline:",
-  "block.breakingblocks.maceration_barrel.leaves": "Leaves:"
+  "block.breakingblocks.maceration_barrel.leaves": "Leaves:",
+  "item.breakingblocks.humidifier": "Humidifier"
 }

@@ -45,6 +45,10 @@ public class ModItems {
             new BlockItem(ModBlocks.COCAINE_BRICK, settings)
             );
 
+    public static final Item HUMIDIFIER_ITEM = registerItem("humidifier", settings ->
+           new BlockItem(ModBlocks.HUMIDIFIER, settings)
+            );
+
     private static Item registerItem(String name, Function<Item.Settings, Item> itemFactory) {
         Identifier id = Identifier.of(BreakingBlocks.MOD_ID, name);
         RegistryKey<Item> key = RegistryKey.of(RegistryKeys.ITEM, id);
@@ -67,6 +71,7 @@ public class ModItems {
             entries.add(DRYED_COKE);
             entries.add(BRICK_PRESS_ITEM);
             entries.add(COCAINE_BRICK_ITEM);
+            entries.add(HUMIDIFIER_ITEM);
         });
     }
 }
