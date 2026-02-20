@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import zezagi.breakingblocks.block.ModBlocks;
 import zezagi.breakingblocks.blockentity.ModBlockEntities;
 import zezagi.breakingblocks.item.CanisterItem;
+import zezagi.breakingblocks.item.ModItemGroups;
 import zezagi.breakingblocks.item.ModItems;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import zezagi.breakingblocks.mixin.AbstractFurnaceBlockEntityAccessor;
@@ -31,6 +32,7 @@ public class BreakingBlocks implements ModInitializer {
 		ModBlocks.registerModBlocks();
 		ModItems.registerModItems();
 		ModComponents.initializeModComponents();
+		ModItemGroups.registerItemGroups();
 		UseBlockCallback.EVENT.register(this::furnaceBlockCallback);
 	}
 

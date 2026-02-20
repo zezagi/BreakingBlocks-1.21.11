@@ -11,6 +11,7 @@ import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import zezagi.breakingblocks.block.DryingStationBlock;
+import zezagi.breakingblocks.util.QualityTier;
 
 public class DryingStationBlockEntity extends BlockEntity {
 
@@ -20,6 +21,8 @@ public class DryingStationBlockEntity extends BlockEntity {
     private long dryingStartedAt = -1;
     private int drawnDryingTime = 0;
     private int dryingProgress = 0;
+
+    private int accumulatedPasteQuality = 0;
 
     public DryingStationBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.DRYING_STATION_BE, pos, state);
@@ -31,6 +34,7 @@ public class DryingStationBlockEntity extends BlockEntity {
         view.put("dryingStartedAt", Codec.LONG, this.dryingStartedAt);
         view.put("drawnDryingTime", Codec.INT, this.drawnDryingTime);
         view.put("dryingProgress", Codec.INT, this.dryingProgress);
+        view.put("accumulatedPasteQuality", Codec.INT, this.accumulatedPasteQuality);
     }
 
     @Override
@@ -39,6 +43,27 @@ public class DryingStationBlockEntity extends BlockEntity {
         this.dryingStartedAt = view.getLong("dryingStartedAt", -1);
         this.drawnDryingTime = view.getInt("drawnDryingTime", 0);
         this.dryingProgress = view.getInt("dryingProgress", 0);
+        this.accumulatedPasteQuality = view.getInt("accumulatedPasteQuality", 0);
+    }
+
+    public void addPasteQuality(QualityTier tier) {
+        this.accumulatedPasteQuality += tier.ordinal();
+        markDirty();
+    }
+
+    public QualityTier calculateFinalQuality() {
+        if (this.accumulatedPasteQuality == 0) return QualityTier.LOW;
+
+        float average = this.accumulatedPasteQuality / 4.0f;
+        int finalOrdinal = Math.round(average);
+
+        finalOrdinal = Math.max(0, Math.min(finalOrdinal, QualityTier.values().length - 1));
+        return QualityTier.values()[finalOrdinal];
+    }
+
+    public void resetQuality() {
+        this.accumulatedPasteQuality = 0;
+        markDirty();
     }
 
     public static void tick(World world, BlockPos pos, BlockState state, DryingStationBlockEntity be) {

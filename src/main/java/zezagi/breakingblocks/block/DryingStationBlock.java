@@ -22,9 +22,11 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import zezagi.breakingblocks.ModComponents;
 import zezagi.breakingblocks.blockentity.DryingStationBlockEntity;
 import zezagi.breakingblocks.blockentity.ModBlockEntities;
 import zezagi.breakingblocks.item.ModItems;
+import zezagi.breakingblocks.util.QualityTier;
 
 public class DryingStationBlock extends Block implements BlockEntityProvider {
 
@@ -84,11 +86,22 @@ public class DryingStationBlock extends Block implements BlockEntityProvider {
     protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         int currentPaste = state.get(PASTE);
         boolean isDry = state.get(DRY);
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+
+        if (!(blockEntity instanceof DryingStationBlockEntity dryingBE)) {
+            return ActionResult.PASS;
+        }
 
         if (currentPaste == 4 && isDry) {
             if (!world.isClient()) {
                 world.setBlockState(pos, state.with(PASTE, 0).with(DRY, false), 3);
+
+                QualityTier finalQuality = dryingBE.calculateFinalQuality();
+                dryingBE.resetQuality();
+
                 ItemStack dryPasteStack = new ItemStack(ModItems.DRYED_COKE, 1);
+                dryPasteStack.set(ModComponents.QUALITY, finalQuality);
+
                 if (!player.getInventory().insertStack(dryPasteStack)) {
                     player.dropItem(dryPasteStack, false);
                 }
@@ -100,6 +113,11 @@ public class DryingStationBlock extends Block implements BlockEntityProvider {
         if (stack.isOf(ModItems.COKE_PASTE)) {
             if (currentPaste < 4 && !isDry) {
                 if (!world.isClient()) {
+
+                    QualityTier pasteQuality = stack.getOrDefault(ModComponents.QUALITY, QualityTier.NORMAL);
+
+                    dryingBE.addPasteQuality(pasteQuality);
+
                     world.setBlockState(pos, state.with(PASTE, currentPaste + 1), 3);
                     if (!player.isCreative()) {
                         stack.decrement(1);

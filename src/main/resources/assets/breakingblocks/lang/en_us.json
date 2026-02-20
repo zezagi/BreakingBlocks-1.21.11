@@ -1,4 +1,5 @@
 {
+  "itemgroup.breakingblocks.main": "Breaking Blocks",
   "item.breakingblocks.coca_seeds": "Coca Seeds",
   "item.breakingblocks.coca_leaf": "Coca Leaf",
   "item.breakingblocks.maceration_barrel": "Maceration Barrel",
@@ -14,5 +15,26 @@
   "block.breakingblocks.maceration_barrel.producing": "Maceration...",
   "block.breakingblocks.maceration_barrel.gasoline": "Gasoline:",
   "block.breakingblocks.maceration_barrel.leaves": "Leaves:",
-  "item.breakingblocks.humidifier": "Humidifier"
+  "item.breakingblocks.humidifier": "Humidifier",
+  "item.breakingblocks.qualityTooltipMessage": "Quality: %s",
+  "tier.breakingblocks.trash": "Trash",
+  "tier.breakingblocks.low": "Low",
+  "tier.breakingblocks.normal": "Normal",
+  "tier.breakingblocks.high": "High",
+  "tier.breakingblocks.pure": "Pure",
+  "tier.breakingblocks.legendary": "Legendary",
+  "item.breakingblocks.nitrogen": "Nitrogen",
+  "item.breakingblocks.fertilizerTooltipMessage1": "Boost growing speed.",
+  "item.breakingblocks.phosphorus": "Phosphorus",
+  "item.breakingblocks.fertilizerTooltipMessage2": "Increases the amount of crops.",
+  "item.breakingblocks.potassium": "Potassium",
+  "item.breakingblocks.fertilizerTooltipMessage3": "Protects the quality of the crop.",
+  "item.breakingblocks.industrial_bleach": "Industrial Bleach",
+  "item.breakingblocks.fertilizerTooltipMessage4": "Improves product quality when added at the right time.",
+  "item.breakingblocks.acetone_mix": "Acetone",
+  "item.breakingblocks.fertilizerTooltipMessage5": "Improves product quality but increases reaction time.",
+  "item.breakingblocks.sulfuric_acid": "Sulfuric Acid",
+  "item.breakingblocks.fertilizerTooltipMessage6": "Improves product quality but can drastically increase reaction temperature.",
+  "item.breakingblocks.blue_cobalt": "Blue Cobalt Crystal",
+  "item.breakingblocks.fertilizerTooltipMessage7": "Improves product quality but requires stiring."
 }

@@ -9,6 +9,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -23,6 +25,8 @@ import zezagi.breakingblocks.blockentity.MacerationBarrelBlockEntity;
 import zezagi.breakingblocks.blockentity.ModBlockEntities;
 import zezagi.breakingblocks.item.CanisterItem;
 import zezagi.breakingblocks.item.ModItems;
+import zezagi.breakingblocks.util.FertilizerItem;
+import zezagi.breakingblocks.util.QualityTier;
 
 public class MacerationBarrelBlock extends Block implements BlockEntityProvider {
 
@@ -80,17 +84,67 @@ public class MacerationBarrelBlock extends Block implements BlockEntityProvider 
             if (barrelBE.isPasteReadyToCollect()) {
                 if (world.isClient()) return ActionResult.SUCCESS;
 
+                QualityTier quality = barrelBE.calculateQuality();
                 barrelBE.collectPaste();
 
                 ItemStack pasteStack = new ItemStack(ModItems.COKE_PASTE);
+                pasteStack.set(ModComponents.QUALITY, quality);
+
                 if (!player.getInventory().insertStack(pasteStack)) {
                     player.dropItem(pasteStack, false);
                 }
 
-                world.playSound(null, pos, net.minecraft.sound.SoundEvents.BLOCK_SLIME_BLOCK_PLACE, net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 1.0f);
+                world.playSound(null, pos, SoundEvents.BLOCK_SLIME_BLOCK_PLACE, SoundCategory.BLOCKS, 1.0f, 1.0f);
                 return ActionResult.SUCCESS;
             }
 
+            if(stack.getItem() instanceof FertilizerItem reagent) {
+
+                if (!barrelBE.isProductionEnabled()) {
+                    return ActionResult.PASS;
+                }
+
+                if(reagent.getFertilizerType() == 4 && !barrelBE.isBleachAdded()) {
+                    if (world.isClient()) return ActionResult.SUCCESS;
+
+                    barrelBE.addBleach(world);
+                    if(!player.isCreative()) stack.decrement(1);
+                    world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                    return ActionResult.SUCCESS;
+                }
+                else if(reagent.getFertilizerType() == 5 && !barrelBE.isAcetoneAdded()) {
+                    if (world.isClient()) return ActionResult.SUCCESS;
+
+                    barrelBE.addAcetone();
+                    if(!player.isCreative()) stack.decrement(1);
+                    world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                    return ActionResult.SUCCESS;
+                }
+                else if(reagent.getFertilizerType() == 6 && !barrelBE.isAcidAdded()) {
+                    if (world.isClient()) return ActionResult.SUCCESS;
+
+                    barrelBE.addAcid();
+                    if(!player.isCreative()) stack.decrement(1);
+                    world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                    return ActionResult.SUCCESS;
+                }
+                else if(reagent.getFertilizerType() == 7 && !barrelBE.isCobaltAdded())
+                {
+                    if (world.isClient()) return ActionResult.SUCCESS;
+
+                    barrelBE.addCobalt();
+                    if(!player.isCreative()) stack.decrement(1);
+                    world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                    return ActionResult.SUCCESS;
+                }
+            }
+            if (barrelBE.needsStiring() && stack.isEmpty()) {
+                if (world.isClient()) return ActionResult.SUCCESS;
+
+                barrelBE.stir();
+                world.playSound(null, pos, SoundEvents.ENTITY_FISHING_BOBBER_SPLASH, SoundCategory.BLOCKS, 1.0f, 1.2f);
+                return ActionResult.SUCCESS;
+            }
             if (barrelBE.isProductionEnabled()) {
                 return ActionResult.PASS;
             }
@@ -108,23 +162,17 @@ public class MacerationBarrelBlock extends Block implements BlockEntityProvider 
 
                 player.setStackInHand(hand, CanisterItem.getModifiedCanister(stack, player, rest));
 
-                world.playSound(null, pos, net.minecraft.sound.SoundEvents.ITEM_BUCKET_EMPTY, net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 1.0f);
+                world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0f, 1.0f);
                 return ActionResult.SUCCESS;
             }
             else if (stack.isOf(ModItems.COCA_LEAF)) {
-                if (barrelBE.getLeavesLevel() >= 64) {
-                    return ActionResult.PASS;
-                }
-
+                if (barrelBE.getLeavesLevel() >= 64) return ActionResult.PASS;
                 if (world.isClient()) return ActionResult.SUCCESS;
 
-                int leavesInHand = stack.getCount();
-                int rest = barrelBE.addLeavesAndReturnRest(leavesInHand);
-                int insertedAmount = leavesInHand - rest;
+                int rest = barrelBE.addLeavesAndReturnRest(stack);
+                stack.setCount(rest);
 
-                stack.decrement(insertedAmount);
-
-                world.playSound(null, pos, net.minecraft.sound.SoundEvents.BLOCK_COMPOSTER_FILL, net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 1.0f);
+                world.playSound(null, pos, SoundEvents.BLOCK_COMPOSTER_FILL, SoundCategory.BLOCKS, 1.0f, 1.0f);
                 return ActionResult.SUCCESS;
             }
         }

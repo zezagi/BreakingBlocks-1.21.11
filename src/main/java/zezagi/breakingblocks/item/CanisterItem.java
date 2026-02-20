@@ -50,6 +50,7 @@ public class CanisterItem extends Item {
         return ItemUsage.exchangeStack(inputStack, player, outputStack);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type) {
         int currentCapacity = stack.getOrDefault(ModComponents.GASOLINE_LEVEL, 0);

@@ -84,7 +84,7 @@ public class MacerationBarrelBlockEntityRenderer implements BlockEntityRenderer<
             String leavesTranslatable = Text.translatable("block.breakingblocks.maceration_barrel.leaves").getString();
 
             String line1 = gasTransalatable + state.gasolineLevel + "/100L";
-            String line2 = leavesTranslatable + state.leavesCount;
+            String line2 = leavesTranslatable + state.leavesCount + "/64";
 
             float x1 = -textRenderer.getWidth(line1) / 2.0f;
             float x2 = -textRenderer.getWidth(line2) / 2.0f;

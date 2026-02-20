@@ -1,6 +1,8 @@
 package zezagi.breakingblocks.util;
 
+import net.minecraft.block.Block;
 import net.minecraft.component.type.TooltipDisplayComponent;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
@@ -10,15 +12,16 @@ import zezagi.breakingblocks.ModComponents;
 
 import java.util.function.Consumer;
 
-public class ItemWithQuality extends Item {
+public class BlockItemWithQuality extends BlockItem {
 
-    public ItemWithQuality(Settings settings) {
-        super(settings.component(ModComponents.QUALITY, QualityTier.NORMAL));
+
+    public BlockItemWithQuality(Block block, Settings settings) {
+        super(block, settings.component(ModComponents.QUALITY, QualityTier.NORMAL));
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type) {
+    public void appendTooltip(ItemStack stack, Item.TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type) {
         QualityTier currentQuality = stack.getOrDefault(ModComponents.QUALITY, QualityTier.NORMAL);
 
         Text formattedTier = Text.translatable("tier.breakingblocks." + currentQuality.getName())

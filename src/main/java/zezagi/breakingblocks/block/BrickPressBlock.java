@@ -19,17 +19,21 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import zezagi.breakingblocks.ModComponents;
 import zezagi.breakingblocks.item.ModItems;
+import zezagi.breakingblocks.util.QualityTier;
+
 
 public class BrickPressBlock extends Block {
 
     public static final IntProperty STATE = IntProperty.of("state", 0, 2);
+    public static final IntProperty QUALITY = IntProperty.of("quality", 0, QualityTier.values().length - 1);
     public static final EnumProperty<Direction> FACING = EnumProperty.of("facing", Direction.class, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST);
     private static final VoxelShape SHAPE = Block.createCuboidShape(1.0, 0.0, 1.0, 15.0, 16.0, 15.0);
 
     public BrickPressBlock(Settings settings) {
         super(settings);
-        setDefaultState(this.stateManager.getDefaultState().with(STATE, 0).with(FACING, Direction.NORTH));
+        setDefaultState(this.stateManager.getDefaultState().with(STATE, 0).with(QUALITY, 0).with(FACING, Direction.NORTH));
     }
 
     @Override
@@ -44,7 +48,7 @@ public class BrickPressBlock extends Block {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(STATE, FACING);
+        builder.add(STATE, QUALITY, FACING);
     }
 
     @Override
@@ -55,7 +59,8 @@ public class BrickPressBlock extends Block {
         if (currentState == 0) {
             if (itemStack.isOf(ModItems.DRYED_COKE)) {
                 if (!world.isClient()) {
-                    world.setBlockState(pos, state.with(STATE, 1));
+                    QualityTier tier = itemStack.getOrDefault(ModComponents.QUALITY, QualityTier.NORMAL);
+                    world.setBlockState(pos, state.with(STATE, 1).with(QUALITY, tier.ordinal()));
                     if (!player.getAbilities().creativeMode) {
                         itemStack.decrement(1);
                     }
@@ -79,11 +84,16 @@ public class BrickPressBlock extends Block {
             return ActionResult.SUCCESS;
         } else if (currentState == 2) {
             if (!world.isClient()) {
+                int qualityOrdinal = state.get(QUALITY);
+                QualityTier tier = QualityTier.values()[qualityOrdinal];
+
                 ItemStack result = new ItemStack(ModItems.COCAINE_BRICK_ITEM);
+                result.set(ModComponents.QUALITY, tier);
+
                 if (!player.getInventory().insertStack(result)) {
                     player.dropItem(result, false);
                 }
-                world.setBlockState(pos, state.with(STATE, 0));
+                world.setBlockState(pos, state.with(STATE, 0).with(QUALITY, 0));
             }
             return ActionResult.SUCCESS;
         }

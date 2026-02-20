@@ -5,6 +5,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.BlockPos;
@@ -14,7 +16,7 @@ import zezagi.breakingblocks.block.ModBlocks;
 
 public class HumidifierBlockEntity extends BlockEntity {
 
-    private int MAX_WATER_LEVEL = 1000;
+    private final int MAX_WATER_LEVEL = 1000;
 
     private int waterLevel = 0;
 
@@ -58,12 +60,12 @@ public class HumidifierBlockEntity extends BlockEntity {
                 }
 
                 for (int i = 0; i < 3; i++) {
-                    double randomX = (world.getRandom().nextDouble() - 0.5) * 20.0;
-                    double randomY = world.getRandom().nextDouble() * 2.0;
-                    double randomZ = (world.getRandom().nextDouble() - 0.5) * 20.0;
+                    double randomX = (world.getRandom().nextDouble() - 0.5) * 11.0;
+                    double randomY = (world.getRandom().nextDouble() - 0.5) * 5.0;
+                    double randomZ = (world.getRandom().nextDouble() - 0.5) * 11.0;
 
                     double pX = pos.getX() + 0.5 + randomX;
-                    double pY = pos.getY() + randomY;
+                    double pY = pos.getY() + 0.5 + randomY;
                     double pZ = pos.getZ() + 0.5 + randomZ;
 
                     world.addParticleClient(ParticleTypes.SPLASH, pX, pY, pZ, 0.0, 0.0, 0.0);
@@ -78,6 +80,7 @@ public class HumidifierBlockEntity extends BlockEntity {
             if (blockEntity.waterLevel == 0) {
                 if (state.get(HumidifierBlock.WATERED)) {
                     world.setBlockState(pos, state.with(HumidifierBlock.WATERED, false), 3);
+                    world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_REDSTONE_TORCH_BURNOUT, SoundCategory.BLOCKS, 1.0f, 1.3f);
                 }
             }
             markDirty(world, pos, state);
@@ -87,7 +90,9 @@ public class HumidifierBlockEntity extends BlockEntity {
             if(state.get(HumidifierBlock.WATERED))
             {
                 world.setBlockState(pos, state.with(HumidifierBlock.WATERED, false), 3);
+                world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_REDSTONE_TORCH_BURNOUT, SoundCategory.BLOCKS, 1.0f, 1.3f);
             }
+            markDirty(world, pos, state);
         }
     }
 
